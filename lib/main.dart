@@ -1,6 +1,7 @@
 import 'package:dcrap/pages/sell_scrap_page.dart';
-import 'package:dcrap/vip_progress_page.dart';
+import 'package:dcrap/pages/vip_progress_page.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() => runApp(const DcrapApp());
 
@@ -42,197 +43,222 @@ class HomeScreen extends StatelessWidget {
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+            // was: EdgeInsets.symmetric(horizontal: 18, vertical: 16)
+            padding: const EdgeInsets.symmetric(vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const _LocationPill(),
-                const SizedBox(height: 16),
-                const _Headline(),
-                const SizedBox(height: 4),
-                Text(
-                  'lorem ipsum',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.grey.shade700,
-                    fontSize: 14,
-                    height: 1.2,
-                  ),
+                // Full-bleed Location pill (slight safe padding)
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: _LocationPill(),
                 ),
-                const SizedBox(height: 50),
-                _GhostCard(
-                  height: size.width * 0.28,
-                  child: const Center(
-                    child: Text(
-                      'dcrap',
-                      style: TextStyle(
-                        fontSize: 34,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1.0,
+                const SizedBox(height: 16),
+
+                // Rest of the page keeps the original 18px horizontal padding
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const _Headline(),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Value Beyond Waste',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          height: 1.2,
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 18),
-                const _BenefitsCard(),
-                const SizedBox(height: 16),
+                      // const SizedBox(height: 50),
+                      Text(
+                        'Turning everyday scrap into assured returns.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey.shade700,
+                          fontSize: 14,
+                          height: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      _GhostCard(
+                        height: size.width * 0.28,
+                        child: const Center(
+                          child: Text(
+                            'dcrap',
+                            style: TextStyle(
+                              fontSize: 34,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      const _BenefitsCard(),
+                      const SizedBox(height: 16),
 
-                // NEW: Growing scrap rates grid
-                const _RatesGridCard(),
-                const SizedBox(height: 16),
+                      // NEW: Growing scrap rates grid
+                      const _RatesGridCard(),
+                      const SizedBox(height: 16),
 
-                // Environmental Impact Card
-                _GhostCard(
-                  height: 110,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-                    child: Row(
-                      children: [
-                        Icon(Icons.eco_rounded, size: 40, color: Color(0xFF25A332)),
-                        const SizedBox(width: 18),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                'Environmental Impact',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                'You have helped save 12kg CO₂ and recycled 25kg waste!',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Rewards Card
-                _GhostCard(
-                  height: 110,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-                    child: Row(
-                      children: [
-                        Icon(Icons.card_giftcard_rounded, size: 40, color: Colors.orangeAccent),
-                        const SizedBox(width: 18),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                'Your Rewards',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                'You have earned 5 coupons and ₹250 cashback!',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black54,
+                      // Environmental Impact Card
+                      _GhostCard(
+                        height: 110,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                          child: Row(
+                            children: [
+                              Icon(Icons.eco_rounded, size: 40, color: Color(0xFF25A332)),
+                              const SizedBox(width: 18),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      'Environmental Impact',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'You have helped save 12kg CO₂ and recycled 25kg waste!',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Trending Market Scrap Card
-                _GhostCard(
-                  height: 110,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-                    child: Row(
-                      children: [
-                        Icon(Icons.trending_up_rounded, size: 40, color: Colors.deepPurple),
-                        const SizedBox(width: 18),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                'Trending Market Scrap',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                'Copper prices up 8% this week. Sell now for best rates!',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Eco Tips Card
-                _GhostCard(
-                  height: 110,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-                    child: Row(
-                      children: [
-                        Icon(Icons.lightbulb_rounded, size: 40, color: Colors.greenAccent),
-                        const SizedBox(width: 18),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                'Eco Tips',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                'Segregate your waste and use reusable bags!',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black54,
+                      ),
+                      const SizedBox(height: 16),
+                      // Rewards Card
+                      _GhostCard(
+                        height: 110,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                          child: Row(
+                            children: [
+                              Icon(Icons.card_giftcard_rounded, size: 40, color: Colors.orangeAccent),
+                              const SizedBox(width: 18),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      'Your Rewards',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'You have earned 5 coupons and ₹250 cashback!',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Trending Market Scrap Card
+                      _GhostCard(
+                        height: 110,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                          child: Row(
+                            children: [
+                              Icon(Icons.trending_up_rounded, size: 40, color: Colors.deepPurple),
+                              const SizedBox(width: 18),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      'Trending Market Scrap',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'Copper prices up 8% this week. Sell now for best rates!',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Eco Tips Card
+                      _GhostCard(
+                        height: 110,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                          child: Row(
+                            children: [
+                              Icon(Icons.lightbulb_rounded, size: 40, color: Colors.greenAccent),
+                              const SizedBox(width: 18),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      'Eco Tips',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'Segregate your waste and use reusable bags!',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 36),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 36),
               ],
             ),
           ),
@@ -332,37 +358,121 @@ class _LocationPill extends StatelessWidget {
   }
 }
 
-class _Headline extends StatelessWidget {
+class _Headline extends StatefulWidget {
   const _Headline();
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: 50),
-        RichText(
-          textAlign: TextAlign.center,
-          text:  TextSpan(
-            style: TextStyle(
-              fontSize: 20,
-              letterSpacing: .3,
-              fontWeight: FontWeight.w800,
-              color: Colors.black,
-            ),
-            children: [
-              TextSpan(text: 'RECYCLING MADE '),
-              TextSpan(
-                text: 'REWARDING',
-                style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              ),
-            ],
-          ),
-        ),
+  State<_Headline> createState() => _HeadlineState();
+}
 
-      ],
+class _HeadlineState extends State<_Headline> with TickerProviderStateMixin {
+  late AnimationController _outCtrl;
+  late AnimationController _inCtrl;
+
+  // Current word being shown
+  String _currentWord = 'REWARDING';
+  bool _nextIsRewarding = false; // next word toggle
+  _Phase _phase = _Phase.hold;
+
+  @override
+  void initState() {
+    super.initState();
+    _outCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 2000));
+    _inCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200));
+    _startCycle(); // begin hold -> out -> in -> repeat
+  }
+
+  @override
+  void dispose() {
+    _outCtrl.dispose();
+    _inCtrl.dispose();
+    super.dispose();
+  }
+
+  Future<void> _startCycle() async {
+    while (mounted) {
+      // Hold (word steady)
+      _phase = _Phase.hold;
+      if (mounted) setState(() {});
+      await Future.delayed(const Duration(milliseconds: 1200));
+
+      // Slide current word out to the right
+      _phase = _Phase.out;
+      _outCtrl.value = 0;
+      if (mounted) setState(() {});
+      await _outCtrl.forward();
+
+      // Swap word after it fully leaves
+      _currentWord = _nextIsRewarding ? 'REWARDING' : 'EASIER';
+      _nextIsRewarding = !_nextIsRewarding;
+
+      // Slide new word in from the left to center (moving right)
+      _phase = _Phase.slideIn;
+      _inCtrl.value = 0;
+      if (mounted) setState(() {});
+      await _inCtrl.forward();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final baseStyle = const TextStyle(
+      fontSize: 21,
+      letterSpacing: .3,
+      fontWeight: FontWeight.w800,
+      color: Colors.black,
+    );
+
+    // Drive UI from both controllers
+    return AnimatedBuilder(
+      animation: Listenable.merge([_outCtrl, _inCtrl]),
+      builder: (context, _) {
+        // Compute horizontal fractional translation
+        double dx = 0;
+        switch (_phase) {
+          case _Phase.hold:
+            dx = 0;
+            break;
+          case _Phase.out:
+            dx = _outCtrl.value * 1.2; // 0 -> +1.2 (move right off-screen)
+            break;
+          case _Phase.slideIn:
+            dx = -1.2 + _inCtrl.value * 1.2; // -1.2 -> 0 (enter from left moving right)
+            break;
+        }
+
+        return Column(
+          children: [
+            const SizedBox(height: 50),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text('RECYCLING MADE ', style: baseStyle, textAlign: TextAlign.left),
+                  // Clip so text can slide fully off without affecting layout
+                  ClipRect(
+                    child: FractionalTranslation(
+                      translation: Offset(dx, 0),
+                      child: Text(
+                        _currentWord,
+                        style: baseStyle.copyWith(color: Theme.of(context).colorScheme.primary),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
+
+enum _Phase { hold, out, slideIn }
 
 class _GhostCard extends StatelessWidget {
   final double height;
@@ -585,7 +695,10 @@ class _RatesGridCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('Growing scrap rates', style: titleStyle),
+              Text('Know your scrap', style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black87,
+                  )),
               const Spacer(),
               TextButton(
                 onPressed: () {
