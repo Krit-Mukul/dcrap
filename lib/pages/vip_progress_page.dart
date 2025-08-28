@@ -39,7 +39,7 @@ class VipProgressPage extends StatelessWidget {
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(.08),
+                                color: Colors.black.withValues(alpha: .08),
                                 blurRadius: 14,
                                 offset: const Offset(0, 6),
                               ),
@@ -105,7 +105,7 @@ class VipProgressPage extends StatelessWidget {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), // smaller
                                     decoration: BoxDecoration(
-                                      color: scheme.primary.withOpacity(0.1),
+                                      color: scheme.primary.withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
@@ -120,7 +120,7 @@ class VipProgressPage extends StatelessWidget {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), // smaller
                                     decoration: BoxDecoration(
-                                      color: scheme.primary.withOpacity(0.1),
+                                      color: scheme.primary.withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(

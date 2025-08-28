@@ -35,13 +35,13 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
-          // gradient: LinearGradient(
-          //   begin: Alignment.topCenter,
-          //   end: Alignment(0, .35),
-          //   colors: [Color(0xFF93E3F3), Color(0xFFEFF7F9)],
-          // ),
-        ),
+        // decoration: const BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.topCenter,
+        //     end: Alignment(0, .35),
+        //     colors: [Color(0xFF93E3F3), Color(0xFFEFF7F9)],
+        //   ),
+        // ),
         child: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 16),
@@ -95,20 +95,20 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 50),
-                      _GhostCard(
-                        height: size.width * 0.28,
-                        child: const Center(
-                          child: Text(
-                            'dcrap',
-                            style: TextStyle(
-                              fontSize: 34,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 18),
+                      // _GhostCard(
+                      //   height: size.width * 0.28,
+                      //   child: const Center(
+                      //     child: Text(
+                      //       'dcrap',
+                      //       style: TextStyle(
+                      //         fontSize: 34,
+                      //         fontWeight: FontWeight.w800,
+                      //         letterSpacing: 1.0,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 18),
                       const _BenefitsCard(),
                       const SizedBox(height: 16),
 
@@ -288,11 +288,12 @@ class _LocationPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        gradient: LinearGradient(colors: [Theme.of(context).colorScheme.primaryContainer.withAlpha(100), Theme.of(context).colorScheme.secondaryContainer.withAlpha(150)], begin: Alignment.topCenter, end: Alignment.bottomCenter,),
+        // color: Theme.of(context).colorScheme.secondaryContainer,
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.07),
+            color: Colors.black.withValues(alpha: .07),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -501,7 +502,7 @@ class _GhostCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.08),
+            color: Colors.black.withValues(alpha: .08),
             blurRadius: 14,
             offset: const Offset(0, 6),
           ),
@@ -530,7 +531,7 @@ class _BenefitsCard extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.10),
+            color: Colors.black.withValues(alpha: .10),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -696,7 +697,7 @@ class _RatesGridCard extends StatelessWidget {
         border: Border.all(color: const Color(0xFFECECEC)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.08),
+            color: Colors.black.withValues(alpha: .08),
             blurRadius: 14,
             offset: const Offset(0, 6),
           ),
@@ -760,7 +761,7 @@ class _RatesGridCard extends StatelessWidget {
                           width: 44,
                           height: 44,
                           decoration: BoxDecoration(
-                            color: it.tint.withOpacity(0.12),
+                            color: it.tint.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(it.icon, color: it.tint, size: 22), // smaller icon

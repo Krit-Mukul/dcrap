@@ -257,7 +257,7 @@ class _SellScrapPageState extends State<SellScrapPage> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: DropdownButtonFormField<String>(
-                            value: _autoUnit,
+                            initialValue: _autoUnit,
                             items: const [
                               DropdownMenuItem(value: 'Days', child: Text('Days')),
                               DropdownMenuItem(value: 'Weeks', child: Text('Weeks')),
@@ -405,7 +405,7 @@ class _SellScrapPageState extends State<SellScrapPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField<String>(
-              value: type,
+              initialValue: type,
               items: _ratesPerKg.keys
                   .map((k) => DropdownMenuItem(value: k, child: Text(k)))
                   .toList(),
