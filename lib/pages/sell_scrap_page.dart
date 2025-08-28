@@ -58,6 +58,7 @@ class _SellScrapPageState extends State<SellScrapPage> {
     final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
+      backgroundColor: Colors.green.shade50,
       appBar: AppBar(
         title: const Text('Book Pickup'),
       ),
