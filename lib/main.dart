@@ -2,6 +2,7 @@ import 'package:dcrap/pages/sell_scrap_page.dart';
 import 'package:dcrap/pages/vip_progress_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:lottie/lottie.dart';
 
 void main() => runApp(const DcrapApp());
 
@@ -35,15 +36,14 @@ class HomeScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment(0, .35),
-            colors: [Color(0xFF93E3F3), Color(0xFFEFF7F9)],
-          ),
+          // gradient: LinearGradient(
+          //   begin: Alignment.topCenter,
+          //   end: Alignment(0, .35),
+          //   colors: [Color(0xFF93E3F3), Color(0xFFEFF7F9)],
+          // ),
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            // was: EdgeInsets.symmetric(horizontal: 18, vertical: 16)
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -63,6 +63,18 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       const _Headline(),
                       const SizedBox(height: 4),
+                      // Add Lottie animation below headline
+                      Center(
+                        child: SizedBox(
+                          height: 200,
+                          child: Lottie.asset(
+                            'assets/lottie_machine.json',
+                            repeat: true,
+                            
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
                       Text(
                         'Value Beyond Waste',
                         textAlign: TextAlign.center,
