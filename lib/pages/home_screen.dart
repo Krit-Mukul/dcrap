@@ -33,13 +33,13 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: LocationPill(
-                            onTap: () {
-                              // Handle location pill tap here
-                              print('Location Pill Tapped');
-                            },
+                            // onTap: () {
+                            //   // Handle location pill tap here
+                            //   print('Location Pill Tapped');
+                            // },
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 12),
                         _profileIcon(context),
                       ],
                     ),
@@ -297,7 +297,7 @@ class HomeScreen extends StatelessWidget {
         ),
         child: const Icon(
           Icons.person_rounded,
-          size: 24,
+          size: 30,
           color: Colors.black87,
         ),
       ),

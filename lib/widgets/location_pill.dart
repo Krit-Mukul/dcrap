@@ -1,20 +1,30 @@
 import 'package:dcrap/pages/location_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/address_provider.dart';
 
-class LocationPill extends StatelessWidget {
-  final VoidCallback? onTap;
-
-  const LocationPill({super.key, this.onTap});
+class LocationPill extends ConsumerWidget {
+  const LocationPill({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Get the list of saved addresses
+    final savedAddresses = ref.watch(savedAddressesProvider);
+
+    // Get the most recent address, or show a default message if none exist
+    final recentAddress = savedAddresses.isNotEmpty
+        ? savedAddresses.last
+        : {'tag': 'No Tag', 'house': 'No address', 'street': ''};
+
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => LocationScreen()),
-        );
+        // Navigate to the location screen or another action
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (context) => const LocationScreen()));
       },
       child: Container(
+        height: 60, // Fixed height for the LocationPill
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -37,21 +47,26 @@ class LocationPill extends StatelessWidget {
         ),
         child: Row(
           children: [
-            _circleIcon(context, icon: Icons.location_on_rounded),
+            const Icon(Icons.location_on_rounded),
             const SizedBox(width: 10),
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Your Location',
-                    style: TextStyle(fontSize: 12, color: Colors.black87),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    'Thapar University, Patiala',
+                    recentAddress['tag'] ?? 'No Tag',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 12, color: Color(0xFF6B6B6B)),
+                  ),
+                  Text(
+                    '${recentAddress['house']}, ${recentAddress['street']}',
+                    style: const TextStyle(fontSize: 12, color: Colors.black87),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -60,34 +75,5 @@ class LocationPill extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  static Widget _circleIcon(
-    BuildContext context, {
-    required IconData icon,
-    VoidCallback? onTap,
-  }) {
-    final child = Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF5F6F7),
-        shape: BoxShape.circle,
-        border: Border.all(color: const Color(0xFFE6E6E6)),
-      ),
-      child: Icon(icon, size: 18, color: Colors.black87),
-    );
-
-    return onTap == null
-        ? child
-        : Material(
-            color: Colors.transparent,
-            shape: const CircleBorder(),
-            child: InkWell(
-              customBorder: const CircleBorder(),
-              onTap: onTap,
-              child: child,
-            ),
-          );
   }
 }
