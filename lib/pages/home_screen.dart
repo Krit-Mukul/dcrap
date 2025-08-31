@@ -27,19 +27,22 @@ class HomeScreen extends StatelessWidget {
                 // Full-bleed Location pill (slight safe padding)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: LocationPill(
-                          onTap: () {
-                            // Handle location pill tap here
-                            print('Location Pill Tapped');
-                          },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: LocationPill(
+                            onTap: () {
+                              // Handle location pill tap here
+                              print('Location Pill Tapped');
+                            },
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      _profileIcon(context),
-                    ],
+                        const SizedBox(width: 20),
+                        _profileIcon(context),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -285,12 +288,12 @@ class HomeScreen extends StatelessWidget {
         );
       },
       child: Container(
-        width: 40,
-        height: 40,
+        width: 58,
+        height: 58,
         decoration: BoxDecoration(
-          color: Colors.grey.shade200,
+          color: Theme.of(context).colorScheme.primaryContainer.withAlpha(100),
           shape: BoxShape.circle,
-          border: Border.all(color: Colors.grey.shade400),
+          // border: Border.all(color: Colors.grey.shade400),
         ),
         child: const Icon(
           Icons.person_rounded,

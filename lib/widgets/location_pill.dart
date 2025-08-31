@@ -1,3 +1,4 @@
+import 'package:dcrap/pages/location_screen.dart';
 import 'package:flutter/material.dart';
 
 class LocationPill extends StatelessWidget {
@@ -8,7 +9,11 @@ class LocationPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => LocationScreen()),
+        );
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
