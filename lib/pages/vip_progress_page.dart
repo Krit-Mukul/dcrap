@@ -34,9 +34,7 @@ class VipProgressPage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(18),
-                            border: Border.all(
-                              color: const Color(0xFFECECEC),
-                            ),
+                            border: Border.all(color: const Color(0xFFECECEC)),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withValues(alpha: .08),
@@ -54,7 +52,9 @@ class VipProgressPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Hi Gamechangr,',
-                                    style: Theme.of(context).textTheme.titleMedium,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.titleMedium,
                                     textAlign: TextAlign.left,
                                   ),
                                 ],
@@ -82,7 +82,10 @@ class VipProgressPage extends StatelessWidget {
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelMedium // smaller pct text
-                                        ?.copyWith(color: scheme.primary, fontWeight: FontWeight.w700),
+                                        ?.copyWith(
+                                          color: scheme.primary,
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -94,18 +97,26 @@ class VipProgressPage extends StatelessWidget {
                                   value: progress.clamp(0.0, 1.0),
                                   minHeight: 8,
                                   backgroundColor: Colors.grey.shade300,
-                                  valueColor: AlwaysStoppedAnimation<Color>(scheme.primary),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    scheme.primary,
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 8),
                               // Moved tags between progress bar and button
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), // smaller
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 2,
+                                    ), // smaller
                                     decoration: BoxDecoration(
-                                      color: scheme.primary.withValues(alpha: 0.1),
+                                      color: scheme.primary.withValues(
+                                        alpha: 0.1,
+                                      ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
@@ -118,9 +129,14 @@ class VipProgressPage extends StatelessWidget {
                                     ),
                                   ),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), // smaller
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 2,
+                                    ), // smaller
                                     decoration: BoxDecoration(
-                                      color: scheme.primary.withValues(alpha: 0.1),
+                                      color: scheme.primary.withValues(
+                                        alpha: 0.1,
+                                      ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
@@ -154,7 +170,10 @@ class VipProgressPage extends StatelessWidget {
                                 // TODO: Add navigation or action
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                  horizontal: 20,
+                                ),
                                 margin: const EdgeInsets.only(bottom: 12),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -169,12 +188,19 @@ class VipProgressPage extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: const [
-                                    Icon(Icons.shopping_bag_rounded, size: 22, color: Colors.black54),
+                                    Icon(
+                                      Icons.shopping_bag_rounded,
+                                      size: 22,
+                                      color: Colors.black54,
+                                    ),
                                     SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
                                         'My Orders',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -185,11 +211,16 @@ class VipProgressPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(30),
                               onTap: () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) => const AutoPickupPage()),
+                                  MaterialPageRoute(
+                                    builder: (_) => const AutoPickupPage(),
+                                  ),
                                 );
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                  horizontal: 20,
+                                ),
                                 margin: const EdgeInsets.only(bottom: 12),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -204,12 +235,19 @@ class VipProgressPage extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: const [
-                                    Icon(Icons.autorenew_rounded, size: 22, color: Colors.black54),
+                                    Icon(
+                                      Icons.autorenew_rounded,
+                                      size: 22,
+                                      color: Colors.black54,
+                                    ),
                                     SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
                                         'Auto Pickups',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -222,7 +260,10 @@ class VipProgressPage extends StatelessWidget {
                                 // TODO: Add navigation or action
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                  horizontal: 20,
+                                ),
                                 margin: const EdgeInsets.only(bottom: 12),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -237,12 +278,19 @@ class VipProgressPage extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: const [
-                                    Icon(Icons.location_on_rounded, size: 22, color: Colors.black54),
+                                    Icon(
+                                      Icons.location_on_rounded,
+                                      size: 22,
+                                      color: Colors.black54,
+                                    ),
                                     SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
                                         'Saved Addresses',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -255,7 +303,10 @@ class VipProgressPage extends StatelessWidget {
                                 // TODO: Add navigation or action
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                  horizontal: 20,
+                                ),
                                 margin: const EdgeInsets.only(bottom: 12),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -270,12 +321,19 @@ class VipProgressPage extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: const [
-                                    Icon(Icons.card_giftcard_rounded, size: 22, color: Colors.black54),
+                                    Icon(
+                                      Icons.card_giftcard_rounded,
+                                      size: 22,
+                                      color: Colors.black54,
+                                    ),
                                     SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
                                         'My Rewards',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -286,11 +344,16 @@ class VipProgressPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(30),
                               onTap: () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) => const LeaderboardPage()),
+                                  MaterialPageRoute(
+                                    builder: (_) => const LeaderboardPage(),
+                                  ),
                                 );
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                  horizontal: 20,
+                                ),
                                 margin: const EdgeInsets.only(bottom: 12),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -305,12 +368,19 @@ class VipProgressPage extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: const [
-                                    Icon(Icons.emoji_events_rounded, size: 22, color: Colors.black54),
+                                    Icon(
+                                      Icons.emoji_events_rounded,
+                                      size: 22,
+                                      color: Colors.black54,
+                                    ),
                                     SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
                                         'Leaderboard',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -323,7 +393,10 @@ class VipProgressPage extends StatelessWidget {
                                 // TODO: Add navigation or action
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                  horizontal: 20,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(30),
@@ -337,12 +410,19 @@ class VipProgressPage extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: const [
-                                    Icon(Icons.support_agent_rounded, size: 22, color: Colors.black54),
+                                    Icon(
+                                      Icons.support_agent_rounded,
+                                      size: 22,
+                                      color: Colors.black54,
+                                    ),
                                     SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
                                         'Live Support',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -383,24 +463,24 @@ class VipProgressPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 120), // was 50: extra bottom space
+                                  SizedBox(
+                                    height: 120,
+                                  ), // was 50: extra bottom space
                                 ],
-              
                               ),
                             ),
                           ],
                         ),
                       ],
-                      ),
                     ),
+                  ),
                 ),
-                  ],
+              ],
             ),
-                ),
-              ),
-            ),
-          );
-        
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -446,7 +526,10 @@ class AutoPickupPage extends StatelessWidget {
             const SizedBox(height: 16),
             Expanded(
               child: Center(
-                child: Text('No automatic pickups yet', style: TextStyle(color: Colors.black54)),
+                child: Text(
+                  'No automatic pickups yet',
+                  style: TextStyle(color: Colors.black54),
+                ),
               ),
             ),
             SizedBox(
@@ -454,9 +537,9 @@ class AutoPickupPage extends StatelessWidget {
               child: FilledButton.icon(
                 onPressed: () {
                   // TODO: Wire to creation flow
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Coming soon')),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(const SnackBar(content: Text('Coming soon')));
                 },
                 icon: const Icon(Icons.add),
                 label: const Text('Set up automatic pickup'),
@@ -534,11 +617,18 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   final isMe = row['isYou'] == true;
 
                   return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 14,
+                    ),
                     decoration: BoxDecoration(
-                      color: isMe ? scheme.primary.withOpacity(0.06) : Colors.white,
+                      color: isMe
+                          ? scheme.primary.withOpacity(0.06)
+                          : Colors.white,
                       borderRadius: BorderRadius.circular(14),
-                      border: isMe ? Border.all(color: scheme.primary, width: 1.2) : null,
+                      border: isMe
+                          ? Border.all(color: scheme.primary, width: 1.2)
+                          : null,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.05),
@@ -551,7 +641,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                       children: [
                         CircleAvatar(
                           radius: 16,
-                          backgroundColor: isTop ? scheme.primary : Colors.grey.shade300,
+                          backgroundColor: isTop
+                              ? scheme.primary
+                              : Colors.grey.shade300,
                           child: Text(
                             '$rank',
                             style: TextStyle(
@@ -568,14 +660,20 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                               Row(
                                 children: [
                                   if (rank == 1) ...[
-                                    const Icon(Icons.emoji_events_rounded, color: Colors.amber, size: 18),
+                                    const Icon(
+                                      Icons.emoji_events_rounded,
+                                      color: Colors.amber,
+                                      size: 18,
+                                    ),
                                     const SizedBox(width: 4),
                                   ],
                                   Text(
                                     row['name'] as String,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color: isMe ? scheme.primary : Colors.black87,
+                                      color: isMe
+                                          ? scheme.primary
+                                          : Colors.black87,
                                     ),
                                   ),
                                 ],
@@ -583,7 +681,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                               const SizedBox(height: 2),
                               Text(
                                 row['location'] as String, // show City, State
-                                style: TextStyle(color: Colors.black54, fontSize: 12),
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 12,
+                                ),
                               ),
                             ],
                           ),
@@ -618,7 +719,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           'For overall contributors, please visit our website.',
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
         ],
       ),
     );
@@ -628,7 +732,12 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   List<Map<String, dynamic>> _rankings({required bool global}) {
     final localOverall = [
       {'name': 'Aarav', 'points': 12340, 'location': 'Chandigarh, Chandigarh'},
-      {'name': 'You', 'points': 11980, 'location': 'Patiala, Punjab', 'isYou': true},
+      {
+        'name': 'You',
+        'points': 11980,
+        'location': 'Patiala, Punjab',
+        'isYou': true,
+      },
       {'name': 'Isha', 'points': 11210, 'location': 'Mohali, Punjab'},
       {'name': 'Kabir', 'points': 10820, 'location': 'Ludhiana, Punjab'},
       {'name': 'Sara', 'points': 10330, 'location': 'Ambala, Haryana'},
@@ -668,7 +777,12 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
       {'name': 'Avery', 'points': 17860, 'location': 'Vancouver, BC'},
       {'name': 'Scarlett', 'points': 17640, 'location': 'Lisbon, Portugal'},
       {'name': 'Henry', 'points': 17310, 'location': 'Stockholm, Sweden'},
-      {'name': 'You', 'points': 17180, 'location': 'Patiala, Punjab', 'isYou': true},
+      {
+        'name': 'You',
+        'points': 17180,
+        'location': 'Patiala, Punjab',
+        'isYou': true,
+      },
       {'name': 'Ella', 'points': 16990, 'location': 'Brisbane, QLD'},
     ];
 
@@ -706,7 +820,11 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 20, color: selected ? scheme.primary : Colors.black54),
+            Icon(
+              icon,
+              size: 20,
+              color: selected ? scheme.primary : Colors.black54,
+            ),
             const SizedBox(width: 8),
             Text(
               label,
