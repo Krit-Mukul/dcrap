@@ -1,3 +1,4 @@
+import 'package:dcrap/pages/explore_screen.dart';
 import 'package:dcrap/pages/orders_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -137,7 +138,9 @@ class VipProgressPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 12),
                               FilledButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ExploreScreen()));
+                                },
                                 child: const Text('Explore More...'),
                               ),
                             ],
