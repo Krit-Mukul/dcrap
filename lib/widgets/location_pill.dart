@@ -1,70 +1,58 @@
-import 'package:dcrap/pages/vip_progress_page.dart';
 import 'package:flutter/material.dart';
 
 class LocationPill extends StatelessWidget {
-  const LocationPill();
+  final VoidCallback? onTap;
+
+  const LocationPill({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Theme.of(context).colorScheme.primaryContainer.withAlpha(100),
-            Theme.of(context).colorScheme.secondaryContainer.withAlpha(150),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-        // color: Theme.of(context).colorScheme.secondaryContainer,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: .07),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primaryContainer.withAlpha(100),
+              Theme.of(context).colorScheme.secondaryContainer.withAlpha(150),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-        ],
-        border: Border.all(color: const Color(0xFFECECEC)),
-      ),
-      child: Row(
-        children: [
-          _circleIcon(context, icon: Icons.location_on_rounded),
-          const SizedBox(width: 10),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Your Location',
-                  style: TextStyle(fontSize: 12, color: Colors.black87),
-                ),
-                SizedBox(height: 2),
-                Text(
-                  'Thapar University, Patiala',
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 12, color: Color(0xFF6B6B6B)),
-                ),
-              ],
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(18),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
             ),
-          ),
-          const SizedBox(width: 10),
-          // 👉 Make profile icon open the VIP progress page
-          _circleIcon(
-            context,
-            icon: Icons.person_rounded,
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const VipProgressPage(
-                    progress: 0.65,
-                  ), // pass real progress here
-                ),
-              );
-            },
-          ),
-        ],
+          ],
+          border: Border.all(color: const Color(0xFFECECEC)),
+        ),
+        child: Row(
+          children: [
+            _circleIcon(context, icon: Icons.location_on_rounded),
+            const SizedBox(width: 10),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Your Location',
+                    style: TextStyle(fontSize: 12, color: Colors.black87),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'Thapar University, Patiala',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 12, color: Color(0xFF6B6B6B)),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

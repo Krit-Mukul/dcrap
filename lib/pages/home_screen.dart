@@ -1,3 +1,4 @@
+import 'package:dcrap/pages/vip_progress_page.dart';
 import 'package:dcrap/widgets/benefits_card.dart';
 import 'package:dcrap/widgets/ghost_card.dart';
 import 'package:dcrap/widgets/headline.dart';
@@ -17,13 +18,6 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
-        // decoration: const BoxDecoration(
-        //   gradient: LinearGradient(
-        //     begin: Alignment.topCenter,
-        //     end: Alignment(0, .35),
-        //     colors: [Color(0xFF93E3F3), Color(0xFFEFF7F9)],
-        //   ),
-        // ),
         child: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 16),
@@ -31,9 +25,22 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Full-bleed Location pill (slight safe padding)
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: LocationPill(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: LocationPill(
+                          onTap: () {
+                            // Handle location pill tap here
+                            print('Location Pill Tapped');
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      _profileIcon(context),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 16),
 
@@ -45,7 +52,6 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       const Headline(),
                       const SizedBox(height: 4),
-                      // Add Lottie animation below headline
                       Center(
                         child: SizedBox(
                           height: 200,
@@ -59,13 +65,12 @@ class HomeScreen extends StatelessWidget {
                       Text(
                         'Value Beyond Waste',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                           height: 1.2,
                         ),
                       ),
-                      // const SizedBox(height: 50),
                       Text(
                         'Turning everyday scrap into assured returns.',
                         textAlign: TextAlign.center,
@@ -76,28 +81,10 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 50),
-                      // _GhostCard(
-                      //   height: size.width * 0.28,
-                      //   child: const Center(
-                      //     child: Text(
-                      //       'dcrap',
-                      //       style: TextStyle(
-                      //         fontSize: 34,
-                      //         fontWeight: FontWeight.w800,
-                      //         letterSpacing: 1.0,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // const SizedBox(height: 18),
                       const BenefitsCard(),
                       const SizedBox(height: 16),
-
-                      // NEW: Growing scrap rates grid
                       const RatesGridCard(),
                       const SizedBox(height: 16),
-
-                      // Environmental Impact Card
                       GhostCard(
                         height: 110,
                         child: Padding(
@@ -107,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.eco_rounded,
                                 size: 40,
                                 color: Color(0xFF25A332),
@@ -283,6 +270,32 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _profileIcon(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => VipProgressPage(progress: 0.65),
+          ),
+        );
+      },
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.grey.shade400),
+        ),
+        child: const Icon(
+          Icons.person_rounded,
+          size: 24,
+          color: Colors.black87,
         ),
       ),
     );
