@@ -6,10 +6,10 @@ class RatesGridCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
-      fontWeight: FontWeight.w800,
-      color: Colors.black87,
-    );
+    // final titleStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
+    //   fontWeight: FontWeight.w800,
+    //   color: Colors.black87,
+    // );
 
     final items = <RateItem>[
       RateItem(

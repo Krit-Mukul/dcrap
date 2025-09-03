@@ -92,7 +92,7 @@ class ExploreScreen extends StatelessWidget {
             // Progress bar
             Container(
               decoration: BoxDecoration(
-                color: (ranks[level]['color'] as Color).withOpacity(0.13),
+                color: (ranks[level]['color'] as Color).withValues(alpha: 0.13),
                 borderRadius: BorderRadius.circular(18),
               ),
               padding: const EdgeInsets.all(18),
@@ -204,7 +204,7 @@ class ExploreScreen extends StatelessWidget {
               return Container(
                 margin: const EdgeInsets.only(bottom: 18),
                 decoration: BoxDecoration(
-                  color: (rank['color'] as Color).withOpacity(0.09),
+                  color: (rank['color'] as Color).withValues(alpha: 0.09),
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: rank['color'] as Color, width: 1.1),
                 ),

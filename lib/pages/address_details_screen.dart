@@ -99,37 +99,36 @@ class _AddressDetailsScreenState extends ConsumerState<AddressDetailsScreen> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    RadioGroup(
-                      onChanged: (String? value) {
-                        if (value != null) {
-                          setState(() {
-                            _selectedTag = value;
-                          });
-                        }
-                      },
-                      child: Row(
+                RadioGroup(
+                  groupValue: _selectedTag,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _selectedTag = value!;
+                    });
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
                           Radio<String>(value: 'Home'),
                           const Text('Home', style: TextStyle(fontSize: 14)),
                         ],
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Radio<String>(value: 'Work'),
-                        const Text('Work', style: TextStyle(fontSize: 14)),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Radio<String>(value: 'Custom'),
-                        const Text('Custom', style: TextStyle(fontSize: 14)),
-                      ],
-                    ),
-                  ],
+                      Row(
+                        children: [
+                          Radio<String>(value: 'Work'),
+                          const Text('Work', style: TextStyle(fontSize: 14)),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Radio<String>(value: 'Custom'),
+                          const Text('Custom', style: TextStyle(fontSize: 14)),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 if (_selectedTag == 'Custom') ...[
                   const SizedBox(height: 16),

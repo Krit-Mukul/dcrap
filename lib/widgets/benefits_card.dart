@@ -8,7 +8,7 @@ class BenefitsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final green = const Color(0xFF1F8F2E);
+    // final green = const Color(0xFF1F8F2E);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(18, 16, 18, 12),

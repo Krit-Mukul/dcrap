@@ -1,23 +1,52 @@
 import 'package:dcrap/pages/explore_screen.dart';
+import 'package:dcrap/pages/login_page.dart';
 import 'package:dcrap/pages/orders_screen.dart';
 import 'package:dcrap/pages/saved_addresses_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dcrap/providers/auth_provider.dart';
 
-class VipProgressPage extends StatelessWidget {
-  final double progress; // 0.0 - 1.0
-
+class VipProgressPage extends ConsumerWidget {
+  final double progress;
   const VipProgressPage({super.key, required this.progress});
 
   @override
-  Widget build(BuildContext context) {
-    final pctText = '${(progress * 100).clamp(0, 100).toStringAsFixed(0)}%';
+  Widget build(BuildContext context, WidgetRef ref) {
     final scheme = Theme.of(context).colorScheme;
+    final pctText = '${(progress * 100).clamp(0, 100).toStringAsFixed(0)}%';
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(
+        title: const Text('Profile'),
+        actions: [
+          IconButton(
+            tooltip: 'Logout',
+            icon: const Icon(Icons.logout_rounded),
+            onPressed: () async {
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: const Text('Logout?'),
+                  content: const Text('You will be returned to the login screen.'),
+                  actions: [
+                    TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+                    FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Logout')),
+                  ],
+                ),
+              );
+              if (confirm == true) {
+                ref.read(authProvider.notifier).toggle(); // toggle login state
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const LoginPage()),
+                  (route) => false,
+                );
+              }
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(

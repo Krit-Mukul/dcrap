@@ -1,18 +1,20 @@
-import 'package:dcrap/pages/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'pages/location_screen.dart';
+import 'package:dcrap/pages/home_screen.dart';
+import 'package:dcrap/pages/login_page.dart';
+import 'package:dcrap/providers/auth_provider.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoggedIn = ref.watch(authProvider);
+
     return MaterialApp(
       title: 'Dcrap',
       debugShowCheckedModeBanner: false,
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Roboto',
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF137B2F)),
       ),
-      home: const HomeScreen(),
+      home: isLoggedIn ? const HomeScreen() : const LoginPage(),
     );
   }
 }
