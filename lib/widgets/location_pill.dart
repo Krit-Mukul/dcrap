@@ -8,25 +8,20 @@ class LocationPill extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Get the list of saved addresses
-    final savedAddresses = ref.watch(savedAddressesProvider);
-
-    // Get the most recent address, or show a default message if none exist
-    final recentAddress = savedAddresses.isNotEmpty
-        ? savedAddresses.last
-        : {'tag': 'No Tag', 'house': 'No address', 'street': ''};
+    // Selected Address? (can be null)
+    final selected = ref.watch(selectedAddressProvider);
 
     return GestureDetector(
       onTap: () {
-        // Navigate to the location screen or another action
-        Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (context) => const LocationScreen()));
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const LocationScreen()),
+        );
       },
       child: Container(
-        height: 60, // Fixed height for the LocationPill
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        height: 60,
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
         decoration: BoxDecoration(
+          // color: Colors.white,
           gradient: LinearGradient(
             colors: [
               Theme.of(context).colorScheme.primaryContainer.withAlpha(100),
@@ -36,41 +31,55 @@ class LocationPill extends ConsumerWidget {
             end: Alignment.bottomCenter,
           ),
           borderRadius: BorderRadius.circular(28),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(18),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
-          ],
-          border: Border.all(color: const Color(0xFFECECEC)),
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.black.withAlpha(18),
+          //     blurRadius: 12,
+          //     offset: const Offset(0, 6),
+          //   ),
+          // ],
+          // border: Border.all(color: Colors.grey.shade400),
         ),
         child: Row(
           children: [
-            const Icon(Icons.location_on_rounded),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    recentAddress['tag'] ?? 'No Tag',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+                  
+                  Row(
+                    children: [
+            const Icon(Icons.location_on_rounded, size: 16,),
+                      Text(
+                        selected?.label.isNotEmpty == true ? selected!.label : 'Select address',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+            const Icon(Icons.chevron_right_rounded, size: 20),
+                    ],
                   ),
-                  Text(
-                    '${recentAddress['house']}, ${recentAddress['street']}',
-                    style: const TextStyle(fontSize: 12, color: Colors.black87),
-                    overflow: TextOverflow.ellipsis,
+                  Row(
+                    children: [
+                      const SizedBox(width: 4),
+                      Text(
+                        selected == null
+                            ? 'Tap to add address'
+                            : '${selected.line1}${selected.line1.isNotEmpty && selected.line2.isNotEmpty ? ', ' : ''}${selected.line2}',
+                        style: const TextStyle(fontSize: 10, color: Colors.black87),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
+            const SizedBox(width: 6),
           ],
         ),
       ),

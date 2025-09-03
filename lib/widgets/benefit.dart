@@ -9,6 +9,7 @@ class Benefit extends StatelessWidget {
     required this.icon,
     required this.labelTop,
     required this.labelBottom,
+    super.key
   });
 
   @override
@@ -16,8 +17,8 @@ class Benefit extends StatelessWidget {
     final circle = Container(
       width: 64,
       height: 64,
-      decoration: const BoxDecoration(
-        color: Color(0xFF3A3A3A),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
         shape: BoxShape.circle,
       ),
       child: const Icon(Icons.circle, color: Colors.transparent),
@@ -29,7 +30,7 @@ class Benefit extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             circle,
-            Icon(icon, color: Colors.white, size: 28),
+            Icon(icon, color: Colors.amber.withAlpha(250), size: 36),
           ],
         ),
         const SizedBox(height: 8),

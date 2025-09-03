@@ -13,12 +13,9 @@ class BenefitsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(18, 16, 18, 12),
       decoration: BoxDecoration(
+        
         borderRadius: BorderRadius.circular(16),
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFFE8F8EB), Color(0xFFD9F5DE), Color(0xFFCFF3D4)],
-        ),
+        color: Theme.of(context).colorScheme.primaryContainer.withAlpha(100),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: .10),

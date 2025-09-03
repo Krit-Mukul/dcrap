@@ -1,5 +1,6 @@
 import 'package:dcrap/pages/explore_screen.dart';
 import 'package:dcrap/pages/orders_screen.dart';
+import 'package:dcrap/pages/saved_addresses_page.dart';
 import 'package:flutter/material.dart';
 
 class VipProgressPage extends StatelessWidget {
@@ -152,6 +153,7 @@ class VipProgressPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            // My Orders
                             InkWell(
                               borderRadius: BorderRadius.circular(30),
                               onTap: () {
@@ -187,6 +189,50 @@ class VipProgressPage extends StatelessWidget {
                                 ),
                               ),
                             ),
+
+                            // Saved addresses (opens SavedAddressesPage)
+                            InkWell(
+                              borderRadius: BorderRadius.circular(30),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (_) => const SavedAddressesPage()),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                                margin: const EdgeInsets.only(bottom: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.07),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  children:  [
+                                    Icon(Icons.location_on_rounded, color: Colors.black54),
+                                    SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        'Saved addresses',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          // color: Colors.black54,
+                                        ),
+                                      ),
+                                    ),
+                                    // Icon(Icons.chevron_right_rounded, color: Colors.black45),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            // Auto Pickups (navigates to AutoPickupPage)
                             InkWell(
                               borderRadius: BorderRadius.circular(30),
                               onTap: () {
@@ -222,39 +268,8 @@ class VipProgressPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            InkWell(
-                              borderRadius: BorderRadius.circular(30),
-                              onTap: () {
-                                // TODO: Add navigation or action
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                                margin: const EdgeInsets.only(bottom: 12),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(30),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.07),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
-                                ),
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.location_on_rounded, size: 22, color: Colors.black54),
-                                    SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        'Saved Addresses',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+
+                            // My Rewards
                             InkWell(
                               borderRadius: BorderRadius.circular(30),
                               onTap: () {

@@ -1,4 +1,5 @@
 import 'package:dcrap/pages/vip_progress_page.dart';
+import 'package:dcrap/pages/wallet_page.dart';
 import 'package:dcrap/widgets/benefits_card.dart';
 import 'package:dcrap/widgets/ghost_card.dart';
 import 'package:dcrap/widgets/headline.dart';
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: SafeArea(
           child: SingleChildScrollView(
@@ -33,13 +34,12 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: LocationPill(
-                            // onTap: () {
-                            //   // Handle location pill tap here
-                            //   print('Location Pill Tapped');
-                            // },
+                            // onTap: () {},
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 6),
+                        _walletIcon(context), // new wallet icon
+                        const SizedBox(width: 6),
                         _profileIcon(context),
                       ],
                     ),
@@ -222,6 +222,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
+                      Image.network('https://global-recycling.info/wp-content/uploads/2021/06/Scrap-Metal-Recycling-221.jpg'),
                       // Eco Tips Card
                       GhostCard(
                         height: 110,
@@ -298,6 +299,29 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(
           Icons.person_rounded,
           size: 30,
+          color: Colors.black87,
+        ),
+      ),
+    );
+  }
+
+  Widget _walletIcon(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const WalletPage()),
+        );
+      },
+      child: Container(
+        width: 58,
+        height: 58,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer.withAlpha(100),
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.account_balance_wallet_rounded,
+          size: 28,
           color: Colors.black87,
         ),
       ),

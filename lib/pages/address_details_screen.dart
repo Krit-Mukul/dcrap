@@ -178,29 +178,30 @@ class _AddressDetailsScreenState extends ConsumerState<AddressDetailsScreen> {
 
   void _saveAddressDetails() {
     if (_formKey.currentState!.validate()) {
-      final tag = _selectedTag == 'Custom'
-          ? _customTagController.text
-          : _selectedTag;
+      final tag = _selectedTag == 'Custom' ? _customTagController.text : _selectedTag;
 
-      final address = {
-        'tag': tag,
-        'house': _houseController.text,
-        'street': _streetController.text,
-        'city': _cityController.text,
-        'state': _stateController.text,
-        'location': widget.currentLocation,
-      };
+      // Create a typed Address instead of a Map
+      final address = Address(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        label: tag,
+        line1: _houseController.text.trim(),
+        line2: _streetController.text.trim(),
+        city: _cityController.text.trim(),
+        pinCode: '000000', // TODO: add a PIN field to the form and use it here
+      );
 
-      // Save the address using the provider
-      ref.read(savedAddressesProvider.notifier).addAddress(address);
+      // Save via provider
+      ref.read(addressesProvider.notifier).add(address);
+
+      // Optionally set the newly added as selected
+      final listLen = ref.read(addressesProvider).length;
+      ref.read(selectedAddressIndexProvider.notifier).state = listLen - 1;
 
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(
-          const SnackBar(content: Text('Address saved successfully!')),
-        );
+        ..showSnackBar(const SnackBar(content: Text('Address saved successfully!')));
 
-      Navigator.of(context).pop(); // Go back to the previous screen
+      Navigator.of(context).pop();
     }
   }
 }
