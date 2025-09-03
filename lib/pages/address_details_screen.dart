@@ -102,45 +102,30 @@ class _AddressDetailsScreenState extends ConsumerState<AddressDetailsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Radio<String>(
-                          value: 'Home',
-                          groupValue: _selectedTag,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedTag = value!;
-                            });
-                          },
-                        ),
-                        const Text('Home', style: TextStyle(fontSize: 14)),
-                      ],
+                    RadioGroup(
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          setState(() {
+                            _selectedTag = value;
+                          });
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Radio<String>(value: 'Home'),
+                          const Text('Home', style: TextStyle(fontSize: 14)),
+                        ],
+                      ),
                     ),
                     Row(
                       children: [
-                        Radio<String>(
-                          value: 'Work',
-                          groupValue: _selectedTag,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedTag = value!;
-                            });
-                          },
-                        ),
+                        Radio<String>(value: 'Work'),
                         const Text('Work', style: TextStyle(fontSize: 14)),
                       ],
                     ),
                     Row(
                       children: [
-                        Radio<String>(
-                          value: 'Custom',
-                          groupValue: _selectedTag,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedTag = value!;
-                            });
-                          },
-                        ),
+                        Radio<String>(value: 'Custom'),
                         const Text('Custom', style: TextStyle(fontSize: 14)),
                       ],
                     ),
@@ -178,7 +163,9 @@ class _AddressDetailsScreenState extends ConsumerState<AddressDetailsScreen> {
 
   void _saveAddressDetails() {
     if (_formKey.currentState!.validate()) {
-      final tag = _selectedTag == 'Custom' ? _customTagController.text : _selectedTag;
+      final tag = _selectedTag == 'Custom'
+          ? _customTagController.text
+          : _selectedTag;
 
       // Create a typed Address instead of a Map
       final address = Address(
@@ -199,7 +186,9 @@ class _AddressDetailsScreenState extends ConsumerState<AddressDetailsScreen> {
 
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(const SnackBar(content: Text('Address saved successfully!')));
+        ..showSnackBar(
+          const SnackBar(content: Text('Address saved successfully!')),
+        );
 
       Navigator.of(context).pop();
     }
