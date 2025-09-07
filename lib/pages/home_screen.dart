@@ -222,7 +222,6 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Image.network('https://global-recycling.info/wp-content/uploads/2021/06/Scrap-Metal-Recycling-221.jpg'),
                       // Eco Tips Card
                       GhostCard(
                         height: 110,
