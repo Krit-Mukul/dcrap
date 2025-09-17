@@ -12,7 +12,7 @@ class LocationPill extends ConsumerWidget {
     final selected = ref.watch(selectedAddressProvider);
 
     return GestureDetector(
-      onTap: () {
+      onTap:() {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => const LocationScreen()),
         );

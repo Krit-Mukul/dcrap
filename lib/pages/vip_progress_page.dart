@@ -35,7 +35,9 @@ class VipProgressPage extends ConsumerWidget {
                 ),
               );
               if (confirm == true) {
-                ref.read(authProvider.notifier).toggle(); // toggle login state
+                ref.read(authProvider.notifier).toggle();
+                 // toggle login state
+                if(!context.mounted) return;
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => const LoginPage()),
                   (route) => false,

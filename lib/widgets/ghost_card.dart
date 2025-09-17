@@ -4,7 +4,7 @@ class GhostCard extends StatelessWidget {
   final double height;
   final Widget? child;
 
-  const GhostCard({required this.height, this.child});
+  const GhostCard({required this.height, this.child, super.key});
 
   @override
   Widget build(BuildContext context) {

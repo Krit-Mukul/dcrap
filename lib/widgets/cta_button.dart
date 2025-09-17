@@ -9,6 +9,7 @@ class CtaButton extends StatelessWidget {
     required this.title,
     required this.onTap,
     required this.color,
+    super.key,
   });
 
   @override

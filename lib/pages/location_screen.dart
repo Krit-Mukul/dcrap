@@ -94,6 +94,7 @@ class _LocationScreenState extends State<LocationScreen> {
         _currentLocation =
             'Lat: ${locationData.latitude}, Lng: ${locationData.longitude}';
       });
+      if(!mounted) return;
 
       Navigator.of(context).pop();
       // Navigate to the AddressDetailsScreen

@@ -26,7 +26,7 @@ class SavedAddressesPage extends ConsumerWidget {
       ),
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
-        itemCount: addresses.length == 0 ? 1 : addresses.length,
+        itemCount: addresses.isEmpty ? 1 : addresses.length,
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, i) {
           if (addresses.isEmpty) {

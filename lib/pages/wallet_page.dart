@@ -141,7 +141,7 @@ class WalletPage extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    (positive ? '+' : '') + '₹ ${amount.toStringAsFixed(2)}',
+                    '${positive ? '+' : ''}₹ ${amount.toStringAsFixed(2)}',
                     style: TextStyle(fontWeight: FontWeight.w800, color: color),
                   ),
                 ],
