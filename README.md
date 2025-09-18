@@ -30,7 +30,7 @@ Dcrap is a Flutter-based application designed to provide a seamless and rewardin
 
 ## Demo Video
 
-<iframe width="560" height="315" src="https://drive.google.com/file/d/1az5aUdCYJxB4D8WiYb5ZBWNnr6RfbeF5/view?usp=sharing" frameborder="0" allowfullscreen></iframe>
+[Watch the demo video here](https://drive.google.com/file/d/1az5aUdCYJxB4D8WiYb5ZBWNnr6RfbeF5/view?usp=sharing)
 
 ---
 
@@ -52,3 +52,65 @@ Ensure you have the following installed:
    ```bash
    git clone https://github.com/your-username/dcrap.git
    cd dcrap
+   ```
+2. Install the dependencies:
+   ```bash
+   flutter pub get
+   ```
+3. Run the app:
+   ```bash
+   flutter run
+   ```
+
+---
+
+## Project Structure
+
+```
+lib/
+├── main.dart                # Entry point of the application
+├── models/                  # Data models
+├── views/                   # UI views
+│   ├── home_view.dart
+│   ├── login_view.dart
+│   └── register_view.dart
+├── widgets/                 # Reusable widgets
+├── services/                # External services (e.g., API, authentication)
+└── utils/                   # Utility functions and constants
+```
+
+---
+
+## Usage
+
+1. **User Authentication**:
+   - Navigate to the login or register view.
+   - Enter your credentials and submit the form.
+   - On successful authentication, you will be redirected to the home view.
+
+2. **Location Services**:
+   - Ensure location services are enabled on your device.
+   - The app will automatically fetch and display your current location.
+
+3. **VIP Progress Tracking**:
+   - Complete tasks and activities within the app to earn VIP points.
+   - Your progress will be displayed on the home view.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature/your-feature`
+3. Make your changes.
+4. Commit your changes: `git commit -m 'Add your feature'`
+5. Push to the branch: `git push origin feature/your-feature`
+6. Submit a pull request.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
