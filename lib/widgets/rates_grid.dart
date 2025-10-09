@@ -71,6 +71,7 @@ class RatesGridCard extends StatelessWidget {
               const Spacer(),
               TextButton(
                 onPressed: () {
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('View all coming soon')),
                   );
@@ -337,7 +338,7 @@ class RatesGridCard extends StatelessWidget {
                           width: 44,
                           height: 44,
                           decoration: BoxDecoration(
-                            color: it.tint.withOpacity(0.12),
+                            color: it.tint.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(it.icon, color: it.tint, size: 22),

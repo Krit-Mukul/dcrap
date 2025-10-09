@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:lottie/lottie.dart';
+
 import 'package:dcrap/pages/vip_progress_page.dart';
 import 'package:dcrap/pages/wallet_page.dart';
 import 'package:dcrap/widgets/benefits_card.dart';
@@ -5,8 +9,6 @@ import 'package:dcrap/widgets/ghost_card.dart';
 import 'package:dcrap/widgets/headline.dart';
 import 'package:dcrap/widgets/location_pill.dart';
 import 'package:dcrap/widgets/rates_grid.dart';
-import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
