@@ -293,15 +293,24 @@ class HomeScreen extends StatelessWidget {
         width: 58,
         height: 58,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer.withAlpha(100),
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary.withAlpha(230),
+              Theme.of(context).colorScheme.primary.withAlpha(180),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           shape: BoxShape.circle,
-          // border: Border.all(color: Colors.grey.shade400),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).colorScheme.primary.withAlpha(51),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        child: const Icon(
-          Icons.person_rounded,
-          size: 30,
-          color: Colors.black87,
-        ),
+        child: const Icon(Icons.person_rounded, size: 30, color: Colors.white),
       ),
     );
   }
@@ -309,21 +318,28 @@ class HomeScreen extends StatelessWidget {
   Widget _walletIcon(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const WalletPage()),
-        );
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const WalletPage()));
       },
       child: Container(
         width: 58,
         height: 58,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer.withAlpha(100),
+          color: const Color(0xFFFFA726).withAlpha(230),
           shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFFFA726).withAlpha(51),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: const Icon(
           Icons.account_balance_wallet_rounded,
-          size: 28,
-          color: Colors.black87,
+          size: 24,
+          color: Colors.white,
         ),
       ),
     );
