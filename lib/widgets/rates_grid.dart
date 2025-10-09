@@ -1,6 +1,6 @@
 import 'package:dcrap/models/rate_item.dart';
+import 'package:dcrap/pages/rates_detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart'; // Add this dependency for graph support
 
 class RatesGridCard extends StatelessWidget {
   const RatesGridCard({super.key});
@@ -40,19 +40,34 @@ class RatesGridCard extends StatelessWidget {
         const Color(0xFF10B981),
         pastRates: [15, 16, 17, 18, 20, 22, 24],
       ),
+      RateItem(
+        'Steel',
+        Icons.construction_rounded,
+        45,
+        52,
+        const Color(0xFF6366F1),
+        pastRates: [40, 42, 44, 45, 48, 50, 52],
+      ),
+      RateItem(
+        'E-Waste',
+        Icons.devices_rounded,
+        85,
+        95,
+        const Color(0xFF8B5CF6),
+        pastRates: [75, 78, 80, 85, 88, 92, 95],
+      ),
     ];
 
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFECECEC)),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 14,
-            offset: const Offset(0, 6),
+            color: Colors.black.withAlpha(10),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -61,35 +76,54 @@ class RatesGridCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                'Know your scrap',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  Icons.show_chart_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Text(
+                'Market Rates',
+                style: TextStyle(
+                  fontSize: 20,
                   fontWeight: FontWeight.w800,
                   color: Colors.black87,
                 ),
               ),
               const Spacer(),
-              TextButton(
+              TextButton.icon(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('View all coming soon')),
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => RatesDetailPage(allItems: items),
+                    ),
                   );
                 },
-                child: const Text('View all'),
+                icon: const Icon(Icons.arrow_forward_rounded, size: 18),
+                label: const Text('View All'),
+                style: TextButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 16),
           GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: items.length,
+            itemCount: items.length > 4 ? 4 : items.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 3.5,
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 1.2, // Increased from 1.15 to 1.2
             ),
             itemBuilder: (context, i) {
               final it = items[i];
@@ -100,314 +134,133 @@ class RatesGridCard extends StatelessWidget {
 
               return Material(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(16),
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(16),
                   onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Container(
-                          constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * 0.9,
-                            maxHeight: MediaQuery.of(context).size.height * 0.7,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.08),
-                                blurRadius: 14,
-                                offset: const Offset(0, 6),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '${it.name} Rates',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.black87,
-                                          ),
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(
-                                        Icons.close,
-                                        color: Colors.black54,
-                                      ),
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                    ),
-                                  ],
-                                ),
-                                const Divider(color: Color(0xFFECECEC)),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                    horizontal: 16,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: it.tint.withOpacity(0.12),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(it.icon, color: it.tint, size: 24),
-                                      const SizedBox(width: 12),
-                                      Text(
-                                        'Current Rate: ₹${it.newPrice.toStringAsFixed(0)}',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: it.tint,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 24),
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: const Color(0xFFECECEC),
-                                      ),
-                                    ),
-                                    child: LineChart(
-                                      LineChartData(
-                                        gridData: FlGridData(
-                                          show: true,
-                                          drawVerticalLine: true,
-                                          getDrawingHorizontalLine: (value) {
-                                            return FlLine(
-                                              color: const Color(0xFFECECEC),
-                                              strokeWidth: 1,
-                                            );
-                                          },
-                                          getDrawingVerticalLine: (value) {
-                                            return FlLine(
-                                              color: const Color(0xFFECECEC),
-                                              strokeWidth: 1,
-                                            );
-                                          },
-                                        ),
-                                        titlesData: FlTitlesData(
-                                          leftTitles: AxisTitles(
-                                            sideTitles: SideTitles(
-                                              showTitles: true,
-                                              reservedSize: 40,
-                                              getTitlesWidget: (value, meta) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                        right: 8,
-                                                      ),
-                                                  child: Text(
-                                                    '₹${value.toInt()}',
-                                                    style: const TextStyle(
-                                                      color: Colors.black54,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          bottomTitles: AxisTitles(
-                                            sideTitles: SideTitles(
-                                              showTitles: true,
-                                              getTitlesWidget: (value, meta) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                        top: 8,
-                                                      ),
-                                                  child: Text(
-                                                    'Day ${value.toInt() + 1}',
-                                                    style: const TextStyle(
-                                                      color: Colors.black54,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          rightTitles: AxisTitles(
-                                            sideTitles: SideTitles(
-                                              showTitles: false,
-                                            ),
-                                          ),
-                                          topTitles: AxisTitles(
-                                            sideTitles: SideTitles(
-                                              showTitles: false,
-                                            ),
-                                          ),
-                                        ),
-                                        borderData: FlBorderData(show: false),
-                                        lineBarsData: [
-                                          LineChartBarData(
-                                            spots: it.pastRates
-                                                .asMap()
-                                                .entries
-                                                .map(
-                                                  (e) => FlSpot(
-                                                    e.key.toDouble(),
-                                                    e.value,
-                                                  ),
-                                                )
-                                                .toList(),
-                                            isCurved: true,
-                                            color: it.tint,
-                                            barWidth: 3,
-                                            dotData: FlDotData(
-                                              show: true,
-                                              getDotPainter:
-                                                  (
-                                                    spot,
-                                                    percent,
-                                                    barData,
-                                                    index,
-                                                  ) {
-                                                    return FlDotCirclePainter(
-                                                      radius: 4,
-                                                      color: it.tint,
-                                                      strokeWidth: 2,
-                                                      strokeColor: Colors.white,
-                                                    );
-                                                  },
-                                            ),
-                                            belowBarData: BarAreaData(
-                                              show: true,
-                                              color: it.tint.withOpacity(0.12),
-                                            ),
-                                          ),
-                                        ],
-                                        minX: 0,
-                                        maxX: (it.pastRates.length - 1)
-                                            .toDouble(),
-                                        minY:
-                                            it.pastRates.reduce(
-                                              (a, b) => a < b ? a : b,
-                                            ) *
-                                            0.9,
-                                        maxY:
-                                            it.pastRates.reduce(
-                                              (a, b) => a > b ? a : b,
-                                            ) *
-                                            1.1,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            RatesDetailPage(allItems: items, initialIndex: i),
                       ),
                     );
                   },
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: const Color(0xFFECECEC)),
+                      gradient: LinearGradient(
+                        colors: [it.tint.withAlpha(15), it.tint.withAlpha(5)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
                     ),
-                    child: Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceBetween, // Changed from mainAxisSize
                       children: [
-                        Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: it.tint.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(it.icon, color: it.tint, size: 22),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                it.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 13,
-                                ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: it.tint.withAlpha(25),
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              const SizedBox(height: 2),
-                              Row(
+                              child: Icon(it.icon, color: it.tint, size: 20),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 3,
+                              ),
+                              decoration: BoxDecoration(
+                                color: up
+                                    ? const Color(0xFF10B981).withAlpha(25)
+                                    : Colors.red.withAlpha(25),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text(
-                                    '₹${it.oldPrice.toStringAsFixed(0)}',
-                                    style: const TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 11,
-                                      decoration: TextDecoration.lineThrough,
-                                    ),
+                                  Icon(
+                                    up
+                                        ? Icons.arrow_upward_rounded
+                                        : Icons.arrow_downward_rounded,
+                                    size: 10,
+                                    color: up
+                                        ? const Color(0xFF10B981)
+                                        : Colors.red,
                                   ),
-                                  const SizedBox(width: 6),
+                                  const SizedBox(width: 2),
                                   Text(
-                                    '₹${it.newPrice.toStringAsFixed(0)}',
-                                    style: const TextStyle(
-                                      color: Color(0xFF1F8F2E),
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 12,
+                                    '${pct.toStringAsFixed(0)}%',
+                                    style: TextStyle(
+                                      color: up
+                                          ? const Color(0xFF10B981)
+                                          : Colors.red,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 9,
                                     ),
-                                  ),
-                                  const Spacer(),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        up
-                                            ? Icons.trending_up_rounded
-                                            : Icons.trending_down_rounded,
-                                        size: 14,
-                                        color: up
-                                            ? const Color(0xFF1F8F2E)
-                                            : Colors.red,
-                                      ),
-                                      const SizedBox(width: 2),
-                                      Text(
-                                        '${up ? '+' : ''}${pct.toStringAsFixed(0)}%',
-                                        style: TextStyle(
-                                          color: up
-                                              ? const Color(0xFF1F8F2E)
-                                              : Colors.red,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 11,
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              it.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            // const SizedBox(height: 2),
+                            Row(
+                              children: [
+                                Text(
+                                  '₹${it.oldPrice.toStringAsFixed(0)}',
+                                  style: TextStyle(
+                                    color: Colors.grey.shade500,
+                                    fontSize: 10,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Flexible(
+                                  child: Text(
+                                    '₹${it.newPrice.toStringAsFixed(0)}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Color(0xFF10B981),
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 4),
+                                Text(
+                                  'per kg',
+                                  style: TextStyle(
+                                    color: Colors.grey.shade500,
+                                    fontSize: 9,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
