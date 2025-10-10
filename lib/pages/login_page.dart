@@ -85,7 +85,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         content: Text('OTP sent to +91 ${_phoneCtrl.text}'),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );
   }
@@ -139,6 +138,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     setState(() => _loading = false);
   }
 
+  // New method to check if OTP is complete and auto-verify
+  void _checkOTPComplete() {
+    final otp = _otpControllers.map((c) => c.text).join();
+    if (otp.length == 4 && !_loading) {
+      // Add a small delay for better UX
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted && !_loading) {
+          _verifyOTP();
+        }
+      });
+    }
+  }
+
   Future<void> _resendOTP() async {
     if (_countdown > 0) return;
 
@@ -155,7 +167,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         content: const Text('OTP resent successfully'),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );
   }
@@ -201,10 +212,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               decoration: BoxDecoration(
                 color: colorScheme.background,
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: colorScheme.outline.withOpacity(0.2)),
+                border: Border.all(color: colorScheme.outline.withAlpha(51)),
                 boxShadow: [
                   BoxShadow(
-                    color: colorScheme.shadow.withOpacity(.08),
+                    color: colorScheme.shadow.withAlpha(20),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -284,13 +295,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
-                                color: colorScheme.outline.withOpacity(0.2),
+                                color: colorScheme.outline.withAlpha(51),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
-                                color: colorScheme.outline.withOpacity(0.2),
+                                color: colorScheme.outline.withAlpha(51),
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
@@ -344,13 +355,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: colorScheme.outline.withOpacity(0.2),
+                              color: colorScheme.outline.withAlpha(51),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: colorScheme.outline.withOpacity(0.2),
+                              color: colorScheme.outline.withAlpha(51),
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -389,7 +400,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                             elevation: 0,
                             disabledBackgroundColor: colorScheme.primary
-                                .withOpacity(0.5),
+                                .withAlpha(128),
                           ),
                           child: _loading
                               ? SizedBox(
@@ -438,7 +449,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                     ],
 
-                    // OTP Input - UPDATED with seamless deletion
+                    // OTP Input - UPDATED with auto-verification
                     if (_otpSent) ...[
                       // OTP Input Fields (4 digits)
                       Row(
@@ -486,17 +497,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                     borderSide: BorderSide(
-                                      color: colorScheme.outline.withOpacity(
-                                        0.2,
-                                      ),
+                                      color: colorScheme.outline.withAlpha(51),
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                     borderSide: BorderSide(
-                                      color: colorScheme.outline.withOpacity(
-                                        0.2,
-                                      ),
+                                      color: colorScheme.outline.withAlpha(51),
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -513,12 +520,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     if (index < 3) {
                                       _otpFocusNodes[index + 1].requestFocus();
                                     } else {
-                                      // Last box - unfocus
+                                      // Last box - unfocus and check if complete
                                       _otpFocusNodes[index].unfocus();
+                                      _checkOTPComplete(); // Auto-verify when last digit is entered
                                     }
                                   } else if (value.isEmpty && index > 0) {
                                     // If field becomes empty, move back
                                     _otpFocusNodes[index - 1].requestFocus();
+                                  }
+
+                                  // Also check completion on any change (in case user pastes)
+                                  if (value.isNotEmpty) {
+                                    _checkOTPComplete();
                                   }
                                 },
                                 onTap: () {
@@ -537,6 +550,33 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
 
                       const SizedBox(height: 24),
+
+                      // Show loading indicator when auto-verifying
+                      if (_loading) ...[
+                        Center(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.5,
+                                  color: colorScheme.primary,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Verifying OTP...',
+                                style: TextStyle(
+                                  color: colorScheme.onSurfaceVariant,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
 
                       // Resend OTP
                       Row(
@@ -559,8 +599,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: _countdown > 0
-                                    ? colorScheme.onSurfaceVariant.withOpacity(
-                                        0.5,
+                                    ? colorScheme.onSurfaceVariant.withAlpha(
+                                        128,
                                       )
                                     : colorScheme.primary,
                               ),
@@ -571,6 +611,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                       const SizedBox(height: 16),
 
+                      // Manual Verify Button (still available if needed)
                       SizedBox(
                         height: 56,
                         child: ElevatedButton(
@@ -583,7 +624,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                             elevation: 0,
                             disabledBackgroundColor: colorScheme.primary
-                                .withOpacity(0.5),
+                                .withAlpha(128),
                           ),
                           child: _loading
                               ? SizedBox(
