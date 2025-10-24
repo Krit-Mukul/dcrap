@@ -1,10 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:dcrap/pages/home_screen.dart';
-import 'package:dcrap/pages/login_page.dart';
-import 'package:dcrap/providers/auth_provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:dcrap/features/home/screens/home_screen.dart';
+import 'package:dcrap/features/auth/screens/login_screen.dart';
+import 'package:dcrap/features/auth/providers/auth_provider.dart';
+import 'package:dcrap/core/config/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.load(fileName: ".env");
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const ProviderScope(child: MyApp()));
 }
 
