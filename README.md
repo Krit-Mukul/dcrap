@@ -29,7 +29,7 @@ Dcrap is a Flutter-based application designed to provide a seamless and rewardin
 
 ## Demo Video
 
-[Watch the demo video here](https://drive.google.com/file/d/1az5aUdCYJxB4D8WiYb5ZBWNnr6RfbeF5/view?usp=sharing)
+[Watch the demo video here](https://drive.google.com/file/d/1eeRP_EpNa2AzXLpE2rKfKbDNk0wEDNcS/view?usp=drivesdk)
 
 ---
 
