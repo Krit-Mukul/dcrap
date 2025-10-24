@@ -14,7 +14,6 @@ Dcrap is a Flutter-based application designed to provide a seamless and rewardin
 - [Project Structure](#project-structure)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -110,7 +109,3 @@ Contributions are welcome! Please follow these steps:
 6. Submit a pull request.
 
 ---
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
