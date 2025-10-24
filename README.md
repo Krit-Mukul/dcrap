@@ -66,16 +66,35 @@ Ensure you have the following installed:
 ## Project Structure
 
 ```
-lib/
-├── main.dart                # Entry point of the application
-├── models/                  # Data models
-├── views/                   # UI views
-│   ├── home_view.dart
-│   ├── login_view.dart
-│   └── register_view.dart
-├── widgets/                 # Reusable widgets
-├── services/                # External services (e.g., API, authentication)
-└── utils/                   # Utility functions and constants
+.
+├── lib/
+│   ├── main.dart                     # Entry point of the application
+│   ├── core/                         # Core functionality
+│   │   ├── config/                   # Configuration files
+│   │   │   └── firebase_options.dart # Firebase configuration
+│   │   ├── constants/                # App constants
+│   │   └── services/                 # Core services
+│   └── features/                     # Feature modules
+│       ├── addresses/                # Address management
+│       ├── auth/                     # Authentication
+│       │   ├── providers/            # Auth state providers
+│       │   └── screens/              # Login/signup screens
+│       ├── explore/                  # Explore feature
+│       ├── home/                     # Home screen
+│       │   └── screens/
+│       ├── orders/                   # Order management
+│       ├── profile/                  # User profile
+│       ├── rates/                    # Rates feature
+│       ├── sell_scrap/               # Sell scrap feature
+│       └── wallet/                   # Wallet feature
+├── assets/                           # Static assets
+│   ├── delivery_animation.json       # Lottie animations
+│   ├── lottie_machine.json
+│   └── money_machine_lottie.json
+├── android/                          # Android-specific files
+├── ios/                              # iOS-specific files
+├── pubspec.yaml                      # Dependencies
+└── README.md                         # Project documentation
 ```
 
 ---
