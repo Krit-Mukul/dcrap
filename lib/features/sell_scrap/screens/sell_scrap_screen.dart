@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../models/scrap_item.dart';
 import 'package:dcrap/features/addresses/models/saved_address.dart';
-import '../models/booking.dart';
 import 'package:dcrap/core/constants/scrap_rates.dart';
+import 'package:dcrap/core/services/storage_service.dart';
+import 'package:dcrap/core/services/api_service.dart';
 import '../widgets/items_step.dart';
 import '../widgets/photo_step.dart';
 import '../widgets/schedule_step.dart';
@@ -19,7 +22,8 @@ class _SellScrapPageState extends State<SellScrapPage> {
   int _step = 0;
 
   final List<ScrapItem> _items = [];
-  bool _photoAttached = false;
+  final List<XFile> _selectedImages = [];
+  final ImagePicker _imagePicker = ImagePicker();
   bool _directPickup = true;
 
   DateTime? _date;
@@ -137,9 +141,11 @@ class _SellScrapPageState extends State<SellScrapPage> {
                     ),
                   if (_step == 1)
                     PhotoStep(
-                      photoAttached: _photoAttached,
-                      onTogglePhoto: () =>
-                          setState(() => _photoAttached = !_photoAttached),
+                      selectedImages: _selectedImages,
+                      onAddPhoto: _pickImages,
+                      onRemovePhoto: (index) {
+                        setState(() => _selectedImages.removeAt(index));
+                      },
                     ),
                   if (_step == 2)
                     ScheduleStep(
@@ -276,127 +282,226 @@ class _SellScrapPageState extends State<SellScrapPage> {
   }
 
   Future<void> _book() async {
-    final bookingId = DateTime.now().millisecondsSinceEpoch.toString();
-    final when = _directPickup
-        ? 'ASAP'
-        : '${_date!.day}/${_date!.month}/${_date!.year} ${_time!.format(context)}';
-
-    await showDialog(
+    // Show loading dialog
+    showDialog(
       context: context,
-      builder: (_) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF10B981).withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.check_circle,
-                  color: Color(0xFF10B981),
-                  size: 64,
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'Booking Confirmed!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Booking ID: #$bookingId',
-                style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
-              ),
-              const SizedBox(height: 24),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Pickup Time',
-                          style: TextStyle(color: Colors.grey.shade600),
-                        ),
-                        Text(
-                          when,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Total Items',
-                          style: TextStyle(color: Colors.grey.shade600),
-                        ),
-                        Text(
-                          '${_items.length}',
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Est. Amount',
-                          style: TextStyle(color: Colors.grey.shade600),
-                        ),
-                        Text(
-                          '₹${_estimate.toStringAsFixed(2)}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 18,
-                            color: Color(0xFF10B981),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF10B981),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: const Text(
-                    'Done',
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                  ),
-                ),
-              ),
-            ],
+      barrierDismissible: false,
+      builder: (_) => const Center(
+        child: Card(
+          child: Padding(
+            padding: EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text('Creating your order...'),
+              ],
+            ),
           ),
         ),
       ),
     );
+
+    try {
+      // Generate order ID first
+      final orderId =
+          'ORD${DateTime.now().millisecondsSinceEpoch}${(DateTime.now().millisecond % 1000)}';
+
+      // Upload images to Firebase Storage if any
+      List<String> imageUrls = [];
+      if (_selectedImages.isNotEmpty) {
+        try {
+          imageUrls = await StorageService.uploadOrderImages(
+            orderId: orderId,
+            images: _selectedImages,
+          );
+          print('✅ Uploaded ${imageUrls.length} images');
+        } catch (e) {
+          print('⚠️ Image upload failed: $e');
+          // Continue without images rather than failing the whole order
+        }
+      }
+
+      // Calculate total weight and price
+      final totalWeight = _items.fold(0.0, (sum, item) => sum + item.weightKg);
+      final estimatedPrice = _estimate;
+
+      // Determine scrap type (use first item's type or 'Mixed' if multiple types)
+      final scrapType = _items.length == 1 ? _items.first.type : 'Mixed';
+
+      // Create order via API
+      final response = await ApiService.createOrder(
+        orderId: orderId,
+        pickupAddress: _selectedAddress!.address,
+        scrapType: scrapType,
+        weight: totalWeight,
+        estimatedPrice: estimatedPrice,
+        customerName: _nameCtrl.text.trim(),
+        customerPhone: _phoneCtrl.text.trim(),
+        customerNotes:
+            'Items: ${_items.map((i) => '${i.type} (${i.weightKg}kg)').join(', ')}',
+        imageUrls: imageUrls,
+      );
+
+      // Close loading dialog
+      if (mounted) Navigator.pop(context);
+
+      // Extract order data
+      final orderData = response['data'];
+      final bookingId = orderData['orderId'] ?? orderId;
+
+      final when = _directPickup
+          ? 'ASAP'
+          : '${_date!.day}/${_date!.month}/${_date!.year} ${_time!.format(context)}';
+
+      // Show success dialog
+      await showDialog(
+        context: context,
+        builder: (_) => Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF10B981).withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.check_circle,
+                    color: Color(0xFF10B981),
+                    size: 64,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'Booking Confirmed!',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Booking ID: #$bookingId',
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+                ),
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Pickup Time',
+                            style: TextStyle(color: Colors.grey.shade600),
+                          ),
+                          Text(
+                            when,
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Total Items',
+                            style: TextStyle(color: Colors.grey.shade600),
+                          ),
+                          Text(
+                            '${_items.length}',
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Est. Amount',
+                            style: TextStyle(color: Colors.grey.shade600),
+                          ),
+                          Text(
+                            '₹${_estimate.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 18,
+                              color: Color(0xFF10B981),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF10B981),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: const Text(
+                      'Done',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    } catch (e) {
+      // Close loading dialog if open
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      // Show error dialog
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text('Order Failed'),
+            content: Text('Failed to create order: ${e.toString()}'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+
+      print('❌ Order creation error: $e');
+    }
   }
 
   Future<void> _pickDate() async {
@@ -416,6 +521,200 @@ class _SellScrapPageState extends State<SellScrapPage> {
       initialTime: _time ?? TimeOfDay.now(),
     );
     if (picked != null) setState(() => _time = picked);
+  }
+
+  Future<void> _pickImages() async {
+    if (_selectedImages.length >= 5) {
+      _snack('Maximum 5 photos allowed');
+      return;
+    }
+
+    try {
+      // WORKAROUND: Camera crashes on Samsung S23 - gallery only for now
+      final source = await showDialog<ImageSource>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Add Photo'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // CAMERA DISABLED DUE TO CRASHES
+              // ListTile(
+              //   leading: const Icon(Icons.camera_alt),
+              //   title: const Text('Take Photo'),
+              //   subtitle: const Text('Currently unavailable'),
+              //   enabled: false,
+              // ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
+                subtitle: const Text('Select existing photos'),
+                onTap: () => Navigator.pop(context, ImageSource.gallery),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Note: Camera temporarily disabled due to device compatibility',
+                  style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      if (source == null) return;
+
+      // Request permissions based on source
+      bool permissionGranted = false;
+
+      if (source == ImageSource.camera) {
+        final status = await Permission.camera.request();
+        permissionGranted = status.isGranted;
+
+        if (status.isPermanentlyDenied) {
+          _showPermissionDialog(
+            'Camera Permission Required',
+            'Please grant camera permission in app settings to take photos.',
+          );
+          return;
+        }
+      } else {
+        // For gallery, try multiple permission types
+        // On Android 13+, photos permission is needed
+        // On older versions, storage permission is needed
+        print('📱 Requesting gallery permissions...');
+
+        PermissionStatus status = await Permission.photos.request();
+        print('📱 Photos permission: $status');
+
+        // If photos permission doesn't work, try storage
+        if (status == PermissionStatus.denied ||
+            status == PermissionStatus.permanentlyDenied) {
+          status = await Permission.storage.request();
+          print('📱 Storage permission: $status');
+        }
+
+        // On some devices, we need manageExternalStorage
+        if (status == PermissionStatus.denied) {
+          status = await Permission.manageExternalStorage.request();
+          print('📱 ManageExternalStorage permission: $status');
+        }
+
+        // Limited access is fine for gallery (Android 14+)
+        permissionGranted = status.isGranted || status.isLimited;
+
+        if (status.isPermanentlyDenied) {
+          _showPermissionDialog(
+            'Storage Permission Required',
+            'Please grant storage/photos permission in app settings to select images. You may need to enable "Photos and videos" or "Media" access.',
+          );
+          return;
+        }
+
+        // If still denied, try to proceed anyway - picker might work
+        if (!permissionGranted) {
+          print(
+            '⚠️ Permission not explicitly granted, trying picker anyway...',
+          );
+          permissionGranted = true; // Try anyway
+        }
+      }
+
+      if (!permissionGranted) {
+        _snack(
+          'Permission denied. Cannot access ${source == ImageSource.camera ? 'camera' : 'gallery'}',
+        );
+        return;
+      }
+
+      // Pick image with very aggressive optimization to prevent crashes
+      // Samsung S23 has 50MP camera which needs heavy compression
+      print(
+        '📸 Picking image from ${source == ImageSource.camera ? "CAMERA" : "GALLERY"}...',
+      );
+
+      final XFile? image = await _imagePicker.pickImage(
+        source: source,
+        maxWidth: source == ImageSource.camera
+            ? 640
+            : 1920, // Even smaller: 640x640
+        maxHeight: source == ImageSource.camera ? 640 : 1080,
+        imageQuality: source == ImageSource.camera
+            ? 40
+            : 85, // Even lower quality: 40%
+        preferredCameraDevice: CameraDevice.rear,
+      );
+
+      print('📸 Image picked: ${image != null ? image.path : "NULL"}');
+
+      // Add small delay after camera capture to let system stabilize
+      if (source == ImageSource.camera && image != null) {
+        print('⏱️ Waiting for system to stabilize...');
+        await Future.delayed(const Duration(milliseconds: 500));
+        print('✅ System stabilized');
+      }
+
+      if (image != null) {
+        if (mounted) {
+          setState(() {
+            _selectedImages.add(image);
+          });
+
+          // Log size asynchronously without blocking UI
+          _logImageSize(image);
+
+          _snack('Photo added successfully');
+        }
+      }
+    } catch (e, stackTrace) {
+      print('❌ Error picking image: $e');
+      print('Stack trace: $stackTrace');
+      if (mounted) {
+        _snack('Failed to pick image. Error: ${e.toString().substring(0, 50)}');
+      }
+    }
+  }
+
+  // Log image size asynchronously to avoid blocking UI
+  void _logImageSize(XFile image) async {
+    try {
+      final bytes = await image.readAsBytes();
+      final sizeInMB = bytes.length / (1024 * 1024);
+      print('✅ Image captured: ${sizeInMB.toStringAsFixed(2)} MB');
+
+      if (sizeInMB > 2.0) {
+        print(
+          '⚠️ WARNING: Image is ${sizeInMB.toStringAsFixed(2)} MB - may cause issues',
+        );
+      }
+    } catch (e) {
+      print('Failed to read image size: $e');
+    }
+  }
+
+  void _showPermissionDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              openAppSettings();
+            },
+            child: const Text('Open Settings'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showAutoPicker() async {

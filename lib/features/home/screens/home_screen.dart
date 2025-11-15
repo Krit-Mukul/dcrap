@@ -283,11 +283,9 @@ class HomeScreen extends StatelessWidget {
   Widget _profileIcon(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ProfileScreen(progress: 0.65),
-          ),
-        );
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (context) => const ProfileScreen()));
       },
       child: Container(
         width: 58,

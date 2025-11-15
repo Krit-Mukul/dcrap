@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:dcrap/core/services/api_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LeaderboardPage extends StatefulWidget {
   const LeaderboardPage({super.key});
@@ -8,17 +10,63 @@ class LeaderboardPage extends StatefulWidget {
 }
 
 class _LeaderboardPageState extends State<LeaderboardPage> {
-  bool _global = false; // false = Local, true = Global
+  String _sortBy = 'totalOrders'; // 'totalOrders' or 'earnings'
+  List<Map<String, dynamic>> _leaderboard = [];
+  bool _loading = true;
+  String? _error;
+  int? _userRank;
+  String _currentUserId = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    _loadLeaderboard();
+  }
+
+  Future<void> _loadLeaderboard() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+
+    try {
+      final data = await ApiService.getLeaderboard(sortBy: _sortBy, limit: 100);
+
+      final leaderboard = (data['data'] as List).cast<Map<String, dynamic>>();
+
+      // Find user's rank
+      final userIndex = leaderboard.indexWhere(
+        (item) => item['uid'] == _currentUserId,
+      );
+
+      setState(() {
+        _leaderboard = leaderboard;
+        _userRank = userIndex != -1 ? userIndex + 1 : null;
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _loading = false;
+      });
+      print('❌ Failed to load leaderboard: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final data = _rankings(global: _global);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Leaderboard'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh_rounded),
+            tooltip: 'Refresh',
+            onPressed: _loadLeaderboard,
+          ),
           IconButton(
             icon: const Icon(Icons.info_outline),
             tooltip: 'Info',
@@ -30,131 +78,390 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            // Sort options
             Row(
               children: [
                 Expanded(
                   child: _modeButton(
                     context,
-                    label: 'Local',
-                    icon: Icons.location_on_rounded,
-                    selected: !_global,
-                    onTap: () => setState(() => _global = false),
+                    label: 'By Orders',
+                    icon: Icons.shopping_bag_rounded,
+                    selected: _sortBy == 'totalOrders',
+                    onTap: () {
+                      setState(() => _sortBy = 'totalOrders');
+                      _loadLeaderboard();
+                    },
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: _modeButton(
                     context,
-                    label: 'Global',
-                    icon: Icons.public_rounded,
-                    selected: _global,
-                    onTap: () => setState(() => _global = true),
+                    label: 'By Earnings',
+                    icon: Icons.currency_rupee_rounded,
+                    selected: _sortBy == 'earnings',
+                    onTap: () {
+                      setState(() => _sortBy = 'earnings');
+                      _loadLeaderboard();
+                    },
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: ListView.separated(
-                itemCount: data.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 8),
-                itemBuilder: (context, i) {
-                  final row = data[i];
-                  final rank = i + 1;
-                  final isTop = rank <= 3;
-                  final isMe = row['isYou'] == true;
-
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 14,
+            
+            // User's rank card
+            if (_userRank != null && !_loading) ...[
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: scheme.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: scheme.primary, width: 1.5),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.emoji_events_rounded, 
+                      color: scheme.primary, 
+                      size: 24
                     ),
-                    decoration: BoxDecoration(
-                      color: isMe
-                          ? scheme.primary.withOpacity(0.06)
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                      border: isMe
-                          ? Border.all(color: scheme.primary, width: 1.2)
-                          : null,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor: isTop
-                              ? scheme.primary
-                              : Colors.grey.shade300,
-                          child: Text(
-                            '$rank',
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Your Rank',
                             style: TextStyle(
-                              color: isTop ? Colors.white : Colors.black87,
-                              fontWeight: FontWeight.w700,
+                              fontSize: 12,
+                              color: Colors.black54,
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
+                          Text(
+                            '#$_userRank of ${_leaderboard.length}',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: scheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (_leaderboard.isNotEmpty) ...[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            _sortBy == 'totalOrders' ? 'Orders' : 'Earnings',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          Text(
+                            _sortBy == 'totalOrders'
+                                ? '${_leaderboard[_userRank! - 1]['totalOrders']}'
+                                : '₹${_leaderboard[_userRank! - 1]['totalEarnings']?.toStringAsFixed(0) ?? '0'}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: scheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+            
+            const SizedBox(height: 12),
+            Expanded(
+              child: _loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _error != null
+                      ? Center(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Row(
-                                children: [
-                                  if (rank == 1) ...[
-                                    const Icon(
-                                      Icons.emoji_events_rounded,
-                                      color: Colors.amber,
-                                      size: 18,
-                                    ),
-                                    const SizedBox(width: 4),
-                                  ],
-                                  Text(
-                                    row['name'] as String,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: isMe
-                                          ? scheme.primary
-                                          : Colors.black87,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                row['location'] as String,
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                ),
+                              Icon(Icons.error_outline,
+                                  size: 48, color: Colors.red),
+                              const SizedBox(height: 16),
+                              Text('Failed to load leaderboard',
+                                  style: TextStyle(fontSize: 16)),
+                              const SizedBox(height: 8),
+                              Text(_error!,
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey)),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: _loadLeaderboard,
+                                child: const Text('Retry'),
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${row['points']} pts',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            color: isMe ? scheme.primary : Colors.black87,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                        )
+                      : _leaderboard.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.leaderboard_outlined,
+                                      size: 64, color: Colors.grey),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'No rankings yet',
+                                    style: TextStyle(
+                                        fontSize: 18, color: Colors.grey),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Be the first to start selling!',
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : RefreshIndicator(
+                              onRefresh: _loadLeaderboard,
+                              child: ListView.separated(
+                                itemCount: _leaderboard.length,
+                                separatorBuilder: (_, __) =>
+                                    const SizedBox(height: 8),
+                                itemBuilder: (context, i) {
+                                  final row = _leaderboard[i];
+                                  final rank = i + 1;
+                                  final isTop = rank <= 3;
+                                  final isMe = row['uid'] == _currentUserId;
+
+                                  return Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 12,
+                                      horizontal: 14,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: isMe
+                                          ? scheme.primary.withOpacity(0.06)
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: isMe
+                                          ? Border.all(
+                                              color: scheme.primary, width: 1.2)
+                                          : null,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.05),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        // Rank badge
+                                        Container(
+                                          width: 40,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: isTop
+                                                ? _getRankColor(rank)
+                                                : Colors.grey.shade300,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Center(
+                                            child: rank <= 3
+                                                ? Icon(
+                                                    Icons.emoji_events_rounded,
+                                                    color: Colors.white,
+                                                    size: 20,
+                                                  )
+                                                : Text(
+                                                    '$rank',
+                                                    style: TextStyle(
+                                                      color: Colors.black87,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        // User info
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Flexible(
+                                                    child: Text(
+                                                      row['displayName'] ??
+                                                          'User',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: isMe
+                                                            ? scheme.primary
+                                                            : Colors.black87,
+                                                        fontSize: 15,
+                                                      ),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                  if (isMe) ...[
+                                                    const SizedBox(width: 6),
+                                                    Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 6,
+                                                        vertical: 2,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: scheme.primary,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                      ),
+                                                      child: Text(
+                                                        'YOU',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ],
+                                              ),
+                                              const SizedBox(height: 2),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.phone_outlined,
+                                                    size: 12,
+                                                    color: Colors.black54,
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  Text(
+                                                    row['phoneNumber'] ?? 'N/A',
+                                                    style: TextStyle(
+                                                      color: Colors.black54,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                  if (row['vipLevel'] !=
+                                                          'None' &&
+                                                      row['vipLevel'] !=
+                                                          null) ...[
+                                                    const SizedBox(width: 8),
+                                                    Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 6,
+                                                        vertical: 2,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: scheme.primary
+                                                            .withOpacity(0.1),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .workspace_premium_rounded,
+                                                            size: 10,
+                                                            color:
+                                                                scheme.primary,
+                                                          ),
+                                                          const SizedBox(
+                                                              width: 2),
+                                                          Text(
+                                                            row['vipLevel'],
+                                                            style: TextStyle(
+                                                              color: scheme
+                                                                  .primary,
+                                                              fontSize: 9,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        // Stats
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              _sortBy == 'totalOrders'
+                                                  ? '${row['totalOrders'] ?? 0}'
+                                                  : '₹${row['totalEarnings']?.toStringAsFixed(0) ?? '0'}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 16,
+                                                color: isMe
+                                                    ? scheme.primary
+                                                    : Colors.black87,
+                                              ),
+                                            ),
+                                            Text(
+                                              _sortBy == 'totalOrders'
+                                                  ? 'orders'
+                                                  : 'earned',
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.black54,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Color _getRankColor(int rank) {
+    switch (rank) {
+      case 1:
+        return Colors.amber; // Gold
+      case 2:
+        return Colors.grey.shade400; // Silver
+      case 3:
+        return Colors.brown.shade400; // Bronze
+      default:
+        return Colors.grey.shade300;
+    }
   }
 
   void _showInfo() {
@@ -163,8 +470,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
       builder: (_) => AlertDialog(
         title: const Text('Leaderboard Info'),
         content: const Text(
-          'The leaderboard resets on the first of every month.\n\n'
-          'For overall contributors, please visit our website.',
+          'Rankings are based on your total completed orders or earnings.\n\n'
+          'Complete more orders to climb the leaderboard!\n\n'
+          'The leaderboard updates in real-time.',
         ),
         actions: [
           TextButton(
@@ -174,66 +482,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
         ],
       ),
     );
-  }
-
-  List<Map<String, dynamic>> _rankings({required bool global}) {
-    final localOverall = [
-      {'name': 'Aarav', 'points': 12340, 'location': 'Chandigarh, Chandigarh'},
-      {
-        'name': 'You',
-        'points': 11980,
-        'location': 'Patiala, Punjab',
-        'isYou': true,
-      },
-      {'name': 'Isha', 'points': 11210, 'location': 'Mohali, Punjab'},
-      {'name': 'Kabir', 'points': 10820, 'location': 'Ludhiana, Punjab'},
-      {'name': 'Sara', 'points': 10330, 'location': 'Ambala, Haryana'},
-      {'name': 'Rohan', 'points': 9820, 'location': 'Panchkula, Haryana'},
-      {'name': 'Neha', 'points': 9510, 'location': 'Jalandhar, Punjab'},
-      {'name': 'Vikram', 'points': 9260, 'location': 'Amritsar, Punjab'},
-      {'name': 'Aditi', 'points': 9050, 'location': 'Patiala, Punjab'},
-      {'name': 'Dev', 'points': 8810, 'location': 'Chandigarh, Chandigarh'},
-      {'name': 'Meera', 'points': 8600, 'location': 'Mohali, Punjab'},
-      {'name': 'Rahul', 'points': 8420, 'location': 'Ludhiana, Punjab'},
-      {'name': 'Pooja', 'points': 8290, 'location': 'Ambala, Haryana'},
-      {'name': 'Kunal', 'points': 8150, 'location': 'Panchkula, Haryana'},
-      {'name': 'Anya', 'points': 7990, 'location': 'Jalandhar, Punjab'},
-      {'name': 'Ira', 'points': 7830, 'location': 'Amritsar, Punjab'},
-      {'name': 'Naman', 'points': 7710, 'location': 'Patiala, Punjab'},
-      {'name': 'Zara', 'points': 7600, 'location': 'Chandigarh, Chandigarh'},
-      {'name': 'Ria', 'points': 7480, 'location': 'Mohali, Punjab'},
-      {'name': 'Samar', 'points': 7350, 'location': 'Ludhiana, Punjab'},
-    ];
-
-    final globalOverall = [
-      {'name': 'Emma', 'points': 22040, 'location': 'Seattle, WA'},
-      {'name': 'Liam', 'points': 21910, 'location': 'Dublin, Leinster'},
-      {'name': 'Olivia', 'points': 21580, 'location': 'London, UK'},
-      {'name': 'Noah', 'points': 21220, 'location': 'Austin, TX'},
-      {'name': 'Ava', 'points': 20990, 'location': 'Toronto, ON'},
-      {'name': 'Sophia', 'points': 20510, 'location': 'Barcelona, Spain'},
-      {'name': 'Mason', 'points': 20340, 'location': 'Sydney, NSW'},
-      {'name': 'Mia', 'points': 19980, 'location': 'Berlin, Germany'},
-      {'name': 'James', 'points': 19740, 'location': 'New York, NY'},
-      {'name': 'Amelia', 'points': 19510, 'location': 'Paris, France'},
-      {'name': 'Ethan', 'points': 19220, 'location': 'Singapore, SG'},
-      {'name': 'Harper', 'points': 18950, 'location': 'Oslo, Norway'},
-      {'name': 'Logan', 'points': 18680, 'location': 'Zurich, Switzerland'},
-      {'name': 'Aria', 'points': 18430, 'location': 'Rome, Italy'},
-      {'name': 'Jackson', 'points': 18110, 'location': 'Boston, MA'},
-      {'name': 'Avery', 'points': 17860, 'location': 'Vancouver, BC'},
-      {'name': 'Scarlett', 'points': 17640, 'location': 'Lisbon, Portugal'},
-      {'name': 'Henry', 'points': 17310, 'location': 'Stockholm, Sweden'},
-      {
-        'name': 'You',
-        'points': 17180,
-        'location': 'Patiala, Punjab',
-        'isYou': true,
-      },
-      {'name': 'Ella', 'points': 16990, 'location': 'Brisbane, QLD'},
-    ];
-
-    return global ? globalOverall : localOverall;
   }
 
   Widget _modeButton(

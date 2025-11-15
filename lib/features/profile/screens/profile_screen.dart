@@ -10,9 +10,7 @@ import 'auto_pickup_screen.dart';
 import 'leaderboard_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
-  final double progress;
-
-  const ProfileScreen({super.key, required this.progress});
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,7 +38,7 @@ class ProfileScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        VipProgressCard(progress: progress),
+                        VipProgressCard(),
                         const SizedBox(height: 16),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,

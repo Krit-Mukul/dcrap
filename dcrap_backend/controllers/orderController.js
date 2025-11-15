@@ -9,6 +9,7 @@ exports.createOrder = async (req, res) => {
   try {
     const { uid } = req.user;
     const {
+      orderId,
       pickupAddress,
       pickupLatitude,
       pickupLongitude,
@@ -23,6 +24,7 @@ exports.createOrder = async (req, res) => {
 
     console.log('📥 Received order creation request:');
     console.log('  User UID:', uid);
+    console.log('  Order ID:', orderId);
     console.log('  Pickup Address:', pickupAddress);
     console.log('  Scrap Type:', scrapType);
     console.log('  Weight:', weight);
@@ -32,17 +34,23 @@ exports.createOrder = async (req, res) => {
     console.log('  Image URLs:', imageUrls);
 
     // Validate required fields
-    if (!pickupAddress || !scrapType || !weight || !estimatedPrice) {
+    if (!orderId || !pickupAddress || !scrapType || !weight || !estimatedPrice) {
       console.log('❌ Validation failed: Missing required fields');
       return res.status(400).json({
         success: false,
-        message: 'Pickup address, scrap type, weight, and estimated price are required'
+        message: 'Order ID, pickup address, scrap type, weight, and estimated price are required'
       });
     }
 
-    // Generate unique order ID
-    const orderId = `ORD${Date.now()}${Math.floor(Math.random() * 1000)}`;
-    console.log('🆔 Generated Order ID:', orderId);
+    // Check if order ID already exists
+    const existingOrder = await Order.findOne({ orderId });
+    if (existingOrder) {
+      console.log('⚠️ Order ID already exists:', orderId);
+      return res.status(400).json({
+        success: false,
+        message: 'Order ID already exists'
+      });
+    }
 
     // Create new order
     const order = new Order({

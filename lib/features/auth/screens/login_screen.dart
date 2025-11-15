@@ -316,10 +316,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       // Cache user data for existing users
       final userData = doc.data();
       if (userData != null) {
+        final phone = '+91${_phoneCtrl.text.trim()}';
         await UserCacheService.saveUser(
           userId: userCred.user!.uid,
           userName: userData['name'] ?? '',
-          userPhone: '+91${_phoneCtrl.text.trim()}',
+          userPhone: phone,
         );
       }
 
