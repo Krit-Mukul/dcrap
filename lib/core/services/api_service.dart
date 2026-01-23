@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -20,11 +21,11 @@ class ApiService {
         final token = await user.getIdToken(
           false,
         ); // false = use cached if valid
-        print('🔐 Firebase user: ${user.uid}');
-        print('🎫 Token length: ${token?.length ?? 0}');
+        // print('🔐 Firebase user: ${user.uid}');
+        // print('🎫 Token length: ${token?.length ?? 0}');
         return token;
       } catch (e) {
-        print('❌ Token refresh failed: $e');
+        // print('❌ Token refresh failed: $e');
         // Token refresh failed - user needs to re-authenticate
         return null;
       }
@@ -38,21 +39,73 @@ class ApiService {
     final token = await _getToken();
     return {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'User-Agent': 'Dcrap-Flutter-App/1.0',
       if (token != null) 'Authorization': 'Bearer $token',
     };
+  }
+
+  /// Helper to make HTTP GET request with retry logic
+  static Future<http.Response> _getWithRetry(
+    String url, {
+    Map<String, String>? headers,
+    Duration timeout = const Duration(seconds: 10),
+    int maxRetries = 2,
+  }) async {
+    Exception? lastException;
+
+    for (int attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        if (attempt > 0) {
+          // print('🔄 Retry attempt $attempt/$maxRetries for $url');
+          await Future.delayed(
+            Duration(seconds: attempt * 2),
+          ); // Exponential backoff
+        }
+
+        final response = await http
+            .get(Uri.parse(url), headers: headers)
+            .timeout(
+              timeout,
+              onTimeout: () {
+                throw Exception(
+                  'Request timeout (${timeout.inSeconds}s) - Backend not responding',
+                );
+              },
+            );
+
+        return response;
+      } catch (e) {
+        lastException = e is Exception ? e : Exception(e.toString());
+        // print('❌ Attempt ${attempt + 1} failed: $e');
+
+        if (attempt == maxRetries) {
+          throw lastException;
+        }
+      }
+    }
+
+    throw lastException ?? Exception('Unknown error during HTTP request');
   }
 
   /// Get VIP progress (auto-creates if doesn't exist)
   static Future<Map<String, dynamic>> getVipProgress() async {
     try {
       final headers = await _getHeaders();
-      final response = await http.get(
-        Uri.parse('$baseUrl/users/vip-progress'),
+      // print('🔍 Fetching VIP progress from: $baseUrl/users/vip-progress');
+      // print('🔑 Headers being sent: ${headers.keys.join(", ")}');
+
+      final response = await _getWithRetry(
+        '$baseUrl/users/vip-progress',
         headers: headers,
+        timeout: const Duration(seconds: 10),
+        maxRetries: 3,
       );
 
+      // print('📡 VIP Progress response: ${response.statusCode}');
       return _handleResponse(response);
     } catch (e) {
+      // print('❌ Error in getVipProgress: $e');
       throw Exception('Failed to get VIP progress: $e');
     }
   }
@@ -65,18 +118,31 @@ class ApiService {
   }) async {
     try {
       final headers = await _getHeaders();
-      final response = await http.put(
-        Uri.parse('$baseUrl/users/vip-progress'),
-        headers: headers,
-        body: jsonEncode({
-          if (totalOrders != null) 'totalOrders': totalOrders,
-          if (totalEarnings != null) 'totalEarnings': totalEarnings,
-          if (vipProgress != null) 'vipProgress': vipProgress,
-        }),
-      );
+      // print('🔍 Updating VIP progress at: $baseUrl/users/vip-progress');
 
+      final response = await http
+          .put(
+            Uri.parse('$baseUrl/users/vip-progress'),
+            headers: headers,
+            body: jsonEncode({
+              if (totalOrders != null) 'totalOrders': totalOrders,
+              if (totalEarnings != null) 'totalEarnings': totalEarnings,
+              if (vipProgress != null) 'vipProgress': vipProgress,
+            }),
+          )
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              throw Exception(
+                'Request timeout (30s) - Backend at $baseUrl is not responding.',
+              );
+            },
+          );
+
+      // print('📡 Update VIP response: ${response.statusCode}');
       return _handleResponse(response);
     } catch (e) {
+      // print('❌ Error in updateVipProgress: $e');
       throw Exception('Failed to update VIP progress: $e');
     }
   }
@@ -85,8 +151,8 @@ class ApiService {
   static Future<List<dynamic>> getAddresses() async {
     try {
       final headers = await _getHeaders();
-      print('🔍 Fetching addresses from: $baseUrl/users/addresses');
-      print('🔑 Headers: ${headers.keys.join(", ")}');
+      // print('🔍 Fetching addresses from: $baseUrl/users/addresses');
+      // print('🔑 Headers: ${headers.keys.join(", ")}');
 
       final response = await http
           .get(Uri.parse('$baseUrl/users/addresses'), headers: headers)
@@ -94,18 +160,18 @@ class ApiService {
             const Duration(seconds: 10),
             onTimeout: () {
               throw Exception(
-                'Request timeout - check if backend is reachable',
+                'Request timeout (30s) - Backend at $baseUrl is not responding. Check your internet connection or backend status.',
               );
             },
           );
 
-      print('📡 Response status: ${response.statusCode}');
-      print('📦 Response body: ${response.body}');
+      // print('📡 Response status: ${response.statusCode}');
+      // print('📦 Response body: ${response.body}');
 
       final result = _handleResponse(response);
       return result['data'] as List<dynamic>;
     } catch (e) {
-      print('❌ Error in getAddresses: $e');
+      // print('❌ Error in getAddresses: $e');
       throw Exception('Failed to get addresses: $e');
     }
   }
@@ -114,10 +180,12 @@ class ApiService {
   static Future<Map<String, dynamic>> getAddressesDebug() async {
     try {
       final headers = await _getHeaders();
-      final response = await http.get(
-        Uri.parse('$baseUrl/users/addresses/debug/all'),
-        headers: headers,
-      );
+      final response = await http
+          .get(
+            Uri.parse('$baseUrl/users/addresses/debug/all'),
+            headers: headers,
+          )
+          .timeout(const Duration(seconds: 10));
 
       return _handleResponse(response);
     } catch (e) {
@@ -143,8 +211,8 @@ class ApiService {
         'isDefault': isDefault,
       };
 
-      print('🔍 Adding address to: $baseUrl/users/addresses');
-      print('📤 Request body: $body');
+      // print('🔍 Adding address to: $baseUrl/users/addresses');
+      // print('📤 Request body: $body');
 
       final response = await http
           .post(
@@ -156,17 +224,17 @@ class ApiService {
             const Duration(seconds: 10),
             onTimeout: () {
               throw Exception(
-                'Request timeout - check if backend is reachable',
+                'Request timeout (30s) - Backend at $baseUrl is not responding. Check your internet connection or backend status.',
               );
             },
           );
 
-      print('📡 Response status: ${response.statusCode}');
-      print('📦 Response body: ${response.body}');
+      // print('📡 Response status: ${response.statusCode}');
+      // print('📦 Response body: ${response.body}');
 
       return _handleResponse(response);
     } catch (e) {
-      print('❌ Error in addAddress: $e');
+      // print('❌ Error in addAddress: $e');
       throw Exception('Failed to add address: $e');
     }
   }
@@ -175,10 +243,12 @@ class ApiService {
   static Future<Map<String, dynamic>> deleteAddress(String addressId) async {
     try {
       final headers = await _getHeaders();
-      final response = await http.delete(
-        Uri.parse('$baseUrl/users/addresses/$addressId'),
-        headers: headers,
-      );
+      final response = await http
+          .delete(
+            Uri.parse('$baseUrl/users/addresses/$addressId'),
+            headers: headers,
+          )
+          .timeout(const Duration(seconds: 10));
 
       return _handleResponse(response);
     } catch (e) {
@@ -190,10 +260,9 @@ class ApiService {
   static Future<Map<String, dynamic>> deleteUserData() async {
     try {
       final headers = await _getHeaders();
-      final response = await http.delete(
-        Uri.parse('$baseUrl/users/data'),
-        headers: headers,
-      );
+      final response = await http
+          .delete(Uri.parse('$baseUrl/users/data'), headers: headers)
+          .timeout(const Duration(seconds: 10));
 
       return _handleResponse(response);
     } catch (e) {
@@ -236,23 +305,25 @@ class ApiService {
         if (imageUrls != null && imageUrls.isNotEmpty) 'imageUrls': imageUrls,
       };
 
-      print('📤 Creating order...');
-      print('📍 URL: $baseUrl/orders');
-      print('📦 Body: ${jsonEncode(body)}');
+      // print('📤 Creating order...');
+      // print('📍 URL: $baseUrl/orders');
+      // print('📦 Body: ${jsonEncode(body)}');
 
-      final response = await http.post(
-        Uri.parse('$baseUrl/orders'),
-        headers: headers,
-        body: jsonEncode(body),
-      );
+      final response = await http
+          .post(
+            Uri.parse('$baseUrl/orders'),
+            headers: headers,
+            body: jsonEncode(body),
+          )
+          .timeout(const Duration(seconds: 10));
 
-      print('📥 Response status: ${response.statusCode}');
-      print('📦 Response body: ${response.body}');
+      // print('📥 Response status: ${response.statusCode}');
+      // print('📦 Response body: ${response.body}');
 
       return _handleResponse(response);
     } catch (e, stackTrace) {
-      print('❌ Create order error: $e');
-      print('Stack trace: $stackTrace');
+      // print('❌ Create order error: $e');
+      // print('Stack trace: $stackTrace');
       throw Exception('Failed to create order: $e');
     }
   }
@@ -265,7 +336,9 @@ class ApiService {
           ? Uri.parse('$baseUrl/orders?status=$status')
           : Uri.parse('$baseUrl/orders');
 
-      final response = await http.get(uri, headers: headers);
+      final response = await http
+          .get(uri, headers: headers)
+          .timeout(const Duration(seconds: 10));
 
       final result = _handleResponse(response);
       return result['data'] as List<dynamic>;
@@ -278,10 +351,9 @@ class ApiService {
   static Future<Map<String, dynamic>> getOrderById(String orderId) async {
     try {
       final headers = await _getHeaders();
-      final response = await http.get(
-        Uri.parse('$baseUrl/orders/$orderId'),
-        headers: headers,
-      );
+      final response = await http
+          .get(Uri.parse('$baseUrl/orders/$orderId'), headers: headers)
+          .timeout(const Duration(seconds: 10));
 
       final result = _handleResponse(response);
       return result['data'] as Map<String, dynamic>;
@@ -298,14 +370,16 @@ class ApiService {
   }) async {
     try {
       final headers = await _getHeaders();
-      final response = await http.put(
-        Uri.parse('$baseUrl/orders/$orderId/status'),
-        headers: headers,
-        body: jsonEncode({
-          'status': status,
-          if (finalPrice != null) 'finalPrice': finalPrice,
-        }),
-      );
+      final response = await http
+          .put(
+            Uri.parse('$baseUrl/orders/$orderId/status'),
+            headers: headers,
+            body: jsonEncode({
+              'status': status,
+              if (finalPrice != null) 'finalPrice': finalPrice,
+            }),
+          )
+          .timeout(const Duration(seconds: 10));
 
       return _handleResponse(response);
     } catch (e) {
@@ -320,10 +394,9 @@ class ApiService {
   }) async {
     try {
       final headers = await _getHeaders();
-      final response = await http.delete(
-        Uri.parse('$baseUrl/orders/$orderId'),
-        headers: headers,
-      );
+      final response = await http
+          .delete(Uri.parse('$baseUrl/orders/$orderId'), headers: headers)
+          .timeout(const Duration(seconds: 10));
 
       return _handleResponse(response);
     } catch (e) {
@@ -334,7 +407,14 @@ class ApiService {
   /// Check backend health
   static Future<Map<String, dynamic>> healthCheck() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/health'));
+      final response = await http
+          .get(Uri.parse('$baseUrl/health'))
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              throw Exception('Health check timeout - Backend not responding');
+            },
+          );
       return _handleResponse(response);
     } catch (e) {
       throw Exception('Failed to check health: $e');
@@ -344,10 +424,22 @@ class ApiService {
   /// Get public scrap rates (no authentication required)
   static Future<List<dynamic>> getRates() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/rates'));
+      final response = await _getWithRetry(
+        '$baseUrl/rates',
+        timeout: const Duration(seconds: 10),
+        maxRetries: 3,
+      );
+
+      // print('📡 Rates response status: ${response.statusCode}');
+      // print('📦 Rates response body: ${response.body}');
+
       final result = _handleResponse(response);
-      return result['data'] as List<dynamic>;
+      final rates = result['data'] as List<dynamic>;
+      // print('✅ Successfully fetched ${rates.length} rates');
+
+      return rates;
     } catch (e) {
+      // print('❌ Error in getRates: $e');
       throw Exception('Failed to get rates: $e');
     }
   }
@@ -363,7 +455,9 @@ class ApiService {
         '$baseUrl/admin/leaderboard?sortBy=$sortBy&limit=$limit',
       );
 
-      final response = await http.get(uri, headers: headers);
+      final response = await http
+          .get(uri, headers: headers)
+          .timeout(const Duration(seconds: 10));
       return _handleResponse(response);
     } catch (e) {
       throw Exception('Failed to get leaderboard: $e');

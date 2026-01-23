@@ -39,7 +39,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         _error = e.toString();
         _loading = false;
       });
-      print('❌ Failed to load orders: $e');
+      // print('❌ Failed to load orders: $e');
     }
   }
 

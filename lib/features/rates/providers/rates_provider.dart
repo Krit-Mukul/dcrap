@@ -64,28 +64,31 @@ class RatesNotifier extends StateNotifier<RatesState> {
     try {
       final ratesData = await ApiService.getRates();
 
-      final rates = ratesData.where((rate) => rate['isActive'] == true).map((
-        rate,
-      ) {
-        final scrapType = rate['scrapType'] as String;
-        final pricePerKg = (rate['pricePerKg'] as num).toDouble();
+      final rates = ratesData
+          .where(
+            (rate) => rate['isActive'] != false,
+          ) // Include if isActive is true or missing
+          .map((rate) {
+            final scrapType = rate['scrapType'] as String;
+            final pricePerKg = (rate['pricePerKg'] as num).toDouble();
 
-        // Get icon and color for this scrap type
-        final mapping =
-            _scrapTypeMapping[scrapType] ?? _scrapTypeMapping['Other']!;
+            // Get icon and color for this scrap type
+            final mapping =
+                _scrapTypeMapping[scrapType] ?? _scrapTypeMapping['Other']!;
 
-        // Generate past rates for chart (current price +/- some variation)
-        final pastRates = _generatePastRates(pricePerKg);
+            // Generate past rates for chart (current price +/- some variation)
+            final pastRates = _generatePastRates(pricePerKg);
 
-        return RateItem(
-          scrapType,
-          mapping['icon'] as IconData,
-          pastRates[pastRates.length - 2], // Old price (second last)
-          pricePerKg, // Current price
-          mapping['color'] as Color,
-          pastRates: pastRates,
-        );
-      }).toList();
+            return RateItem(
+              scrapType,
+              mapping['icon'] as IconData,
+              pastRates[pastRates.length - 2], // Old price (second last)
+              pricePerKg, // Current price
+              mapping['color'] as Color,
+              pastRates: pastRates,
+            );
+          })
+          .toList();
 
       state = state.copyWith(rates: rates, isLoading: false);
     } catch (e) {
@@ -93,7 +96,7 @@ class RatesNotifier extends StateNotifier<RatesState> {
         errorMessage: 'Failed to load rates: ${e.toString()}',
         isLoading: false,
       );
-      print('Error fetching rates: $e');
+      // print('Error fetching rates: $e');
     }
   }
 

@@ -118,7 +118,7 @@ exports.initializeRates = async (req, res) => {
 exports.getPublicRates = async (req, res) => {
   try {
     const rates = await Rate.find({ isActive: true })
-      .select('scrapType pricePerKg description')
+      .select('scrapType pricePerKg description isActive')
       .sort({ scrapType: 1 });
 
     res.json({

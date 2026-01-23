@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - DCrap</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    <span>dcrap</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="features.html">Features</a>
+                    <a href="rates.html">Rates</a>
+                    <a href="about.html">About</a>
+                    <a href="leaderboard.html" class="active">Leaderboard</a>
+                    <a href="contact.html">Contact</a>
+                    <button class="btn-primary" onclick="window.location.href='signup.html'">Get Started</button>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="features.html">Features</a>
+        <a href="rates.html">Rates</a>
+        <a href="about.html">About</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="contact.html">Contact</a>
+        <button class="btn-primary" onclick="window.location.href='signup.html'">Get Started</button>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>🏆 Leaderboard</h1>
+            <p>Top contributors making a difference</p>
+        </div>
+    </section>
+
+    <!-- Leaderboard Content -->
+    <section class="leaderboard-content">
+        <div class="container">
+            <!-- Sort Options -->
+            <div class="sort-controls">
+                <button class="sort-btn active" onclick="sortLeaderboard('earnings')">
+                    💰 Top Earners
+                </button>
+                <button class="sort-btn" onclick="sortLeaderboard('orders')">
+                    📦 Most Orders
+                </button>
+                <button class="sort-btn" onclick="sortLeaderboard('impact')">
+                    🌱 Eco Impact
+                </button>
+            </div>
+
+            <!-- Top 3 Podium -->
+            <div class="podium-section">
+                <div class="podium-item second">
+                    <div class="podium-avatar">👨‍💼</div>
+                    <div class="podium-rank">2nd</div>
+                    <h3>Rajesh Kumar</h3>
+                    <div class="podium-stats">
+                        <div class="stat-value">₹42,500</div>
+                        <div class="stat-label">Total Earned</div>
+                    </div>
+                    <div class="badge silver">🥈 Silver VIP</div>
+                </div>
+
+                <div class="podium-item first">
+                    <div class="podium-avatar champion">👩‍💻</div>
+                    <div class="podium-rank champion">1st</div>
+                    <h3>Priya Sharma</h3>
+                    <div class="podium-stats">
+                        <div class="stat-value">₹58,900</div>
+                        <div class="stat-label">Total Earned</div>
+                    </div>
+                    <div class="badge gold">🥇 Gold VIP</div>
+                </div>
+
+                <div class="podium-item third">
+                    <div class="podium-avatar">👨‍🔬</div>
+                    <div class="podium-rank">3rd</div>
+                    <h3>Amit Singh</h3>
+                    <div class="podium-stats">
+                        <div class="stat-value">₹38,200</div>
+                        <div class="stat-label">Total Earned</div>
+                    </div>
+                    <div class="badge bronze">🥉 Silver VIP</div>
+                </div>
+            </div>
+
+            <!-- Leaderboard List -->
+            <div class="leaderboard-list">
+                <div class="leaderboard-item">
+                    <div class="rank">4</div>
+                    <div class="user-info">
+                        <div class="user-avatar">👨‍🎨</div>
+                        <div class="user-details">
+                            <h4>Vikram Patel</h4>
+                            <p>152 orders • 845 kg recycled</p>
+                        </div>
+                    </div>
+                    <div class="user-stats">
+                        <div class="stat-primary">₹32,400</div>
+                        <div class="badge-small vip">VIP</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">5</div>
+                    <div class="user-info">
+                        <div class="user-avatar">👩‍🏫</div>
+                        <div class="user-details">
+                            <h4>Neha Gupta</h4>
+                            <p>138 orders • 782 kg recycled</p>
+                        </div>
+                    </div>
+                    <div class="user-stats">
+                        <div class="stat-primary">₹28,700</div>
+                        <div class="badge-small vip">VIP</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">6</div>
+                    <div class="user-info">
+                        <div class="user-avatar">👨‍💼</div>
+                        <div class="user-details">
+                            <h4>Arjun Mehta</h4>
+                            <p>125 orders • 698 kg recycled</p>
+                        </div>
+                    </div>
+                    <div class="user-stats">
+                        <div class="stat-primary">₹25,100</div>
+                        <div class="badge-small">Member</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">7</div>
+                    <div class="user-info">
+                        <div class="user-avatar">👩‍⚕️</div>
+                        <div class="user-details">
+                            <h4>Kavya Reddy</h4>
+                            <p>118 orders • 654 kg recycled</p>
+                        </div>
+                    </div>
+                    <div class="user-stats">
+                        <div class="stat-primary">₹23,800</div>
+                        <div class="badge-small">Member</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">8</div>
+                    <div class="user-info">
+                        <div class="user-avatar">👨‍🍳</div>
+                        <div class="user-details">
+                            <h4>Sanjay Verma</h4>
+                            <p>105 orders • 589 kg recycled</p>
+                        </div>
+                    </div>
+                    <div class="user-stats">
+                        <div class="stat-primary">₹21,400</div>
+                        <div class="badge-small">Member</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">9</div>
+                    <div class="user-info">
+                        <div class="user-avatar">👩‍🔬</div>
+                        <div class="user-details">
+                            <h4>Anjali Nair</h4>
+                            <p>98 orders • 542 kg recycled</p>
+                        </div>
+                    </div>
+                    <div class="user-stats">
+                        <div class="stat-primary">₹19,600</div>
+                        <div class="badge-small">Member</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">10</div>
+                    <div class="user-info">
+                        <div class="user-avatar">👨‍🚀</div>
+                        <div class="user-details">
+                            <h4>Rohan Kapoor</h4>
+                            <p>92 orders • 512 kg recycled</p>
+                        </div>
+                    </div>
+                    <div class="user-stats">
+                        <div class="stat-primary">₹18,200</div>
+                        <div class="badge-small">Member</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Your Rank Card -->
+            <div class="your-rank-card">
+                <h3>🎯 Your Position</h3>
+                <p>Join DCrap to see your rank and compete with others!</p>
+                <button class="btn-primary" onclick="window.location.href='signup.html'">Sign Up Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="leaderboard-stats">
+        <div class="container">
+            <h2>Community Impact</h2>
+            <div class="impact-stats">
+                <div class="impact-card">
+                    <div class="impact-icon">👥</div>
+                    <div class="impact-number">10,000+</div>
+                    <div class="impact-label">Active Users</div>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon">📦</div>
+                    <div class="impact-number">50,000+</div>
+                    <div class="impact-label">Total Orders</div>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon">♻️</div>
+                    <div class="impact-number">2,000+</div>
+                    <div class="impact-label">Tons Recycled</div>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon">🌍</div>
+                    <div class="impact-number">5,000+</div>
+                    <div class="impact-label">Tons CO₂ Saved</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Join the Top Contributors!</h2>
+                <p>Start recycling and climb the leaderboard</p>
+                <button class="btn-primary btn-large" onclick="window.location.href='signup.html'">Get Started Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <span>DCrap</span>
+                    </div>
+                    <p>Making recycling rewarding and easy for everyone.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="features.html">Features</a>
+                    <a href="rates.html">Rates</a>
+                    <a href="about.html">About</a>
+                    <a href="leaderboard.html">Leaderboard</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Refund Policy</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <a href="mailto:contact@dcrap.com">contact@dcrap.com</a>
+                    <a href="tel:+919876543210">+91 98765 43210</a>
+                    <p>Patiala, Punjab, India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DCrap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="leaderboard.js"></script>
+</body>
+</html>

@@ -18,10 +18,10 @@
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
     <application
-        android:label="dcrap"
+        android:label="Dcrap"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:largeHeap="true"
         android:hardwareAccelerated="true">
         <activity

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - DCrap</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    <span>dcrap</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="features.html" class="active">Features</a>
+                    <a href="rates.html">Rates</a>
+                    <a href="about.html">About</a>
+                    <a href="leaderboard.html">Leaderboard</a>
+                    <a href="contact.html">Contact</a>
+                    <button class="btn-primary" onclick="window.location.href='signup.html'">Get Started</button>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="features.html">Features</a>
+        <a href="rates.html">Rates</a>
+        <a href="about.html">About</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="contact.html">Contact</a>
+        <button class="btn-primary" onclick="window.location.href='signup.html'">Get Started</button>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Our Features</h1>
+            <p>Discover what makes DCrap the best choice for selling your scrap</p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" style="padding-top: 3rem;">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3>Best Prices Guaranteed</h3>
+                    <p>Get the most competitive rates for all types of scrap materials. Our prices are updated daily based on market trends.</p>
+                    <ul class="feature-list">
+                        <li>✓ Daily updated rates</li>
+                        <li>✓ Price match guarantee</li>
+                        <li>✓ Transparent pricing</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Doorstep Pickup</h3>
+                    <p>We come to your location to collect your scrap at your convenience. No need to transport heavy materials.</p>
+                    <ul class="feature-list">
+                        <li>✓ Free pickup service</li>
+                        <li>✓ Flexible time slots</li>
+                        <li>✓ GPS tracking</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Quick Payment</h3>
+                    <p>Instant payment to your wallet or preferred payment method. Choose from UPI, bank transfer, or cash.</p>
+                    <ul class="feature-list">
+                        <li>✓ Instant wallet credit</li>
+                        <li>✓ Multiple payment options</li>
+                        <li>✓ Secure transactions</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Verified Partners</h3>
+                    <p>All our collection partners are verified, trained, and background-checked for your safety.</p>
+                    <ul class="feature-list">
+                        <li>✓ Background verified</li>
+                        <li>✓ Professional training</li>
+                        <li>✓ Customer ratings</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <h3>Secure & Safe</h3>
+                    <p>Your data and transactions are protected with bank-level encryption and security measures.</p>
+                    <ul class="feature-list">
+                        <li>✓ 256-bit encryption</li>
+                        <li>✓ Secure payments</li>
+                        <li>✓ Privacy protected</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        </svg>
+                    </div>
+                    <h3>Eco-Friendly Impact</h3>
+                    <p>Track your environmental contribution. See how much CO2 you've saved by recycling.</p>
+                    <ul class="feature-list">
+                        <li>✓ Carbon footprint tracking</li>
+                        <li>✓ Impact dashboard</li>
+                        <li>✓ Eco-rewards program</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Features -->
+    <section class="app-features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Mobile App Features</h2>
+                <p>Everything you need in one simple app</p>
+            </div>
+            <div class="app-features-grid">
+                <div class="app-feature-item">
+                    <span class="feature-emoji">📱</span>
+                    <h4>Easy Order Booking</h4>
+                    <p>Book pickups in just 3 taps</p>
+                </div>
+                <div class="app-feature-item">
+                    <span class="feature-emoji">📍</span>
+                    <h4>Live Tracking</h4>
+                    <p>Track your pickup in real-time</p>
+                </div>
+                <div class="app-feature-item">
+                    <span class="feature-emoji">💰</span>
+                    <h4>Digital Wallet</h4>
+                    <p>Manage your earnings easily</p>
+                </div>
+                <div class="app-feature-item">
+                    <span class="feature-emoji">📊</span>
+                    <h4>Order History</h4>
+                    <p>View all past transactions</p>
+                </div>
+                <div class="app-feature-item">
+                    <span class="feature-emoji">🏆</span>
+                    <h4>Rewards Program</h4>
+                    <p>Earn points with every order</p>
+                </div>
+                <div class="app-feature-item">
+                    <span class="feature-emoji">📞</span>
+                    <h4>24/7 Support</h4>
+                    <p>We're here to help anytime</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Experience All Features Today!</h2>
+                <p>Download the app and start selling your scrap</p>
+                <button class="btn-primary btn-large" onclick="window.location.href='signup.html'">Get Started Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <span>DCrap</span>
+                    </div>
+                    <p>Making recycling rewarding and easy for everyone.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="features.html">Features</a>
+                    <a href="rates.html">Rates</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Refund Policy</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <a href="mailto:contact@dcrap.com">contact@dcrap.com</a>
+                    <a href="tel:+919876543210">+91 98765 43210</a>
+                    <p>Patiala, Punjab, India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DCrap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

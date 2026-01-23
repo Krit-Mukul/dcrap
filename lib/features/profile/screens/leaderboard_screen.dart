@@ -50,7 +50,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
         _error = e.toString();
         _loading = false;
       });
-      print('❌ Failed to load leaderboard: $e');
+      // print('❌ Failed to load leaderboard: $e');
     }
   }
 
@@ -108,7 +108,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 ),
               ],
             ),
-            
+
             // User's rank card
             if (_userRank != null && !_loading) ...[
               const SizedBox(height: 12),
@@ -121,9 +121,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.emoji_events_rounded, 
-                      color: scheme.primary, 
-                      size: 24
+                    Icon(
+                      Icons.emoji_events_rounded,
+                      color: scheme.primary,
+                      size: 24,
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -176,274 +177,267 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 ),
               ),
             ],
-            
+
             const SizedBox(height: 12),
             Expanded(
               child: _loading
                   ? const Center(child: CircularProgressIndicator())
                   : _error != null
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.error_outline,
-                                  size: 48, color: Colors.red),
-                              const SizedBox(height: 16),
-                              Text('Failed to load leaderboard',
-                                  style: TextStyle(fontSize: 16)),
-                              const SizedBox(height: 8),
-                              Text(_error!,
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.grey)),
-                              const SizedBox(height: 16),
-                              ElevatedButton(
-                                onPressed: _loadLeaderboard,
-                                child: const Text('Retry'),
-                              ),
-                            ],
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            size: 48,
+                            color: Colors.red,
                           ),
-                        )
-                      : _leaderboard.isEmpty
-                          ? Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.leaderboard_outlined,
-                                      size: 64, color: Colors.grey),
-                                  const SizedBox(height: 16),
-                                  Text(
-                                    'No rankings yet',
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.grey),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'Be the first to start selling!',
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.grey),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : RefreshIndicator(
-                              onRefresh: _loadLeaderboard,
-                              child: ListView.separated(
-                                itemCount: _leaderboard.length,
-                                separatorBuilder: (_, __) =>
-                                    const SizedBox(height: 8),
-                                itemBuilder: (context, i) {
-                                  final row = _leaderboard[i];
-                                  final rank = i + 1;
-                                  final isTop = rank <= 3;
-                                  final isMe = row['uid'] == _currentUserId;
+                          const SizedBox(height: 16),
+                          Text(
+                            'Failed to load leaderboard',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _error!,
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: _loadLeaderboard,
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    )
+                  : _leaderboard.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.leaderboard_outlined,
+                            size: 64,
+                            color: Colors.grey,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'No rankings yet',
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Be the first to start selling!',
+                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    )
+                  : RefreshIndicator(
+                      onRefresh: _loadLeaderboard,
+                      child: ListView.separated(
+                        itemCount: _leaderboard.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        itemBuilder: (context, i) {
+                          final row = _leaderboard[i];
+                          final rank = i + 1;
+                          final isTop = rank <= 3;
+                          final isMe = row['uid'] == _currentUserId;
 
-                                  return Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 12,
-                                      horizontal: 14,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: isMe
-                                          ? scheme.primary.withOpacity(0.06)
-                                          : Colors.white,
-                                      borderRadius: BorderRadius.circular(14),
-                                      border: isMe
-                                          ? Border.all(
-                                              color: scheme.primary, width: 1.2)
-                                          : null,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.05),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        // Rank badge
-                                        Container(
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            color: isTop
-                                                ? _getRankColor(rank)
-                                                : Colors.grey.shade300,
-                                            shape: BoxShape.circle,
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                              horizontal: 14,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isMe
+                                  ? scheme.primary.withOpacity(0.06)
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(14),
+                              border: isMe
+                                  ? Border.all(
+                                      color: scheme.primary,
+                                      width: 1.2,
+                                    )
+                                  : null,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.05),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                // Rank badge
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: isTop
+                                        ? _getRankColor(rank)
+                                        : Colors.grey.shade300,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: rank <= 3
+                                        ? Icon(
+                                            Icons.emoji_events_rounded,
+                                            color: Colors.white,
+                                            size: 20,
+                                          )
+                                        : Text(
+                                            '$rank',
+                                            style: TextStyle(
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                          child: Center(
-                                            child: rank <= 3
-                                                ? Icon(
-                                                    Icons.emoji_events_rounded,
-                                                    color: Colors.white,
-                                                    size: 20,
-                                                  )
-                                                : Text(
-                                                    '$rank',
-                                                    style: TextStyle(
-                                                      color: Colors.black87,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        // User info
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Flexible(
-                                                    child: Text(
-                                                      row['displayName'] ??
-                                                          'User',
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: isMe
-                                                            ? scheme.primary
-                                                            : Colors.black87,
-                                                        fontSize: 15,
-                                                      ),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                  if (isMe) ...[
-                                                    const SizedBox(width: 6),
-                                                    Container(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 6,
-                                                        vertical: 2,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                        color: scheme.primary,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4),
-                                                      ),
-                                                      child: Text(
-                                                        'YOU',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ],
-                                              ),
-                                              const SizedBox(height: 2),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.phone_outlined,
-                                                    size: 12,
-                                                    color: Colors.black54,
-                                                  ),
-                                                  const SizedBox(width: 4),
-                                                  Text(
-                                                    row['phoneNumber'] ?? 'N/A',
-                                                    style: TextStyle(
-                                                      color: Colors.black54,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                  if (row['vipLevel'] !=
-                                                          'None' &&
-                                                      row['vipLevel'] !=
-                                                          null) ...[
-                                                    const SizedBox(width: 8),
-                                                    Container(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 6,
-                                                        vertical: 2,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                        color: scheme.primary
-                                                            .withOpacity(0.1),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4),
-                                                      ),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .workspace_premium_rounded,
-                                                            size: 10,
-                                                            color:
-                                                                scheme.primary,
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 2),
-                                                          Text(
-                                                            row['vipLevel'],
-                                                            style: TextStyle(
-                                                              color: scheme
-                                                                  .primary,
-                                                              fontSize: 9,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(width: 8),
-                                        // Stats
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              _sortBy == 'totalOrders'
-                                                  ? '${row['totalOrders'] ?? 0}'
-                                                  : '₹${row['totalEarnings']?.toStringAsFixed(0) ?? '0'}',
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                // User info
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              row['displayName'] ?? 'User',
                                               style: TextStyle(
-                                                fontWeight: FontWeight.w800,
-                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
                                                 color: isMe
                                                     ? scheme.primary
                                                     : Colors.black87,
+                                                fontSize: 15,
                                               ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                            Text(
-                                              _sortBy == 'totalOrders'
-                                                  ? 'orders'
-                                                  : 'earned',
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.black54,
+                                          ),
+                                          if (isMe) ...[
+                                            const SizedBox(width: 6),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 6,
+                                                    vertical: 2,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color: scheme.primary,
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                              child: Text(
+                                                'YOU',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
                                           ],
-                                        ),
-                                      ],
+                                        ],
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.phone_outlined,
+                                            size: 12,
+                                            color: Colors.black54,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            row['phoneNumber'] ?? 'N/A',
+                                            style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          if (row['vipLevel'] != 'None' &&
+                                              row['vipLevel'] != null) ...[
+                                            const SizedBox(width: 8),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 6,
+                                                    vertical: 2,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color: scheme.primary
+                                                    .withOpacity(0.1),
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Icon(
+                                                    Icons
+                                                        .workspace_premium_rounded,
+                                                    size: 10,
+                                                    color: scheme.primary,
+                                                  ),
+                                                  const SizedBox(width: 2),
+                                                  Text(
+                                                    row['vipLevel'],
+                                                    style: TextStyle(
+                                                      color: scheme.primary,
+                                                      fontSize: 9,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                // Stats
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      _sortBy == 'totalOrders'
+                                          ? '${row['totalOrders'] ?? 0}'
+                                          : '₹${row['totalEarnings']?.toStringAsFixed(0) ?? '0'}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 16,
+                                        color: isMe
+                                            ? scheme.primary
+                                            : Colors.black87,
+                                      ),
                                     ),
-                                  );
-                                },
-                              ),
+                                    Text(
+                                      _sortBy == 'totalOrders'
+                                          ? 'orders'
+                                          : 'earned',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
+                          );
+                        },
+                      ),
+                    ),
             ),
           ],
         ),

@@ -316,9 +316,9 @@ class _SellScrapPageState extends State<SellScrapPage> {
             orderId: orderId,
             images: _selectedImages,
           );
-          print('✅ Uploaded ${imageUrls.length} images');
+          // print('✅ Uploaded ${imageUrls.length} images');
         } catch (e) {
-          print('⚠️ Image upload failed: $e');
+          // print('⚠️ Image upload failed: $e');
           // Continue without images rather than failing the whole order
         }
       }
@@ -500,7 +500,7 @@ class _SellScrapPageState extends State<SellScrapPage> {
         );
       }
 
-      print('❌ Order creation error: $e');
+      // print('❌ Order creation error: $e');
     }
   }
 
@@ -584,22 +584,22 @@ class _SellScrapPageState extends State<SellScrapPage> {
         // For gallery, try multiple permission types
         // On Android 13+, photos permission is needed
         // On older versions, storage permission is needed
-        print('📱 Requesting gallery permissions...');
+        // print('📱 Requesting gallery permissions...');
 
         PermissionStatus status = await Permission.photos.request();
-        print('📱 Photos permission: $status');
+        // print('📱 Photos permission: $status');
 
         // If photos permission doesn't work, try storage
         if (status == PermissionStatus.denied ||
             status == PermissionStatus.permanentlyDenied) {
           status = await Permission.storage.request();
-          print('📱 Storage permission: $status');
+          // print('📱 Storage permission: $status');
         }
 
         // On some devices, we need manageExternalStorage
         if (status == PermissionStatus.denied) {
           status = await Permission.manageExternalStorage.request();
-          print('📱 ManageExternalStorage permission: $status');
+          // print('📱 ManageExternalStorage permission: $status');
         }
 
         // Limited access is fine for gallery (Android 14+)
@@ -647,13 +647,13 @@ class _SellScrapPageState extends State<SellScrapPage> {
         preferredCameraDevice: CameraDevice.rear,
       );
 
-      print('📸 Image picked: ${image != null ? image.path : "NULL"}');
+      // print('📸 Image picked: ${image != null ? image.path : "NULL"}');
 
       // Add small delay after camera capture to let system stabilize
       if (source == ImageSource.camera && image != null) {
-        print('⏱️ Waiting for system to stabilize...');
+        // print('⏱️ Waiting for system to stabilize...');
         await Future.delayed(const Duration(milliseconds: 500));
-        print('✅ System stabilized');
+        // print('✅ System stabilized');
       }
 
       if (image != null) {
@@ -669,8 +669,8 @@ class _SellScrapPageState extends State<SellScrapPage> {
         }
       }
     } catch (e, stackTrace) {
-      print('❌ Error picking image: $e');
-      print('Stack trace: $stackTrace');
+      // print('❌ Error picking image: $e');
+      // print('Stack trace: $stackTrace');
       if (mounted) {
         _snack('Failed to pick image. Error: ${e.toString().substring(0, 50)}');
       }
@@ -682,7 +682,7 @@ class _SellScrapPageState extends State<SellScrapPage> {
     try {
       final bytes = await image.readAsBytes();
       final sizeInMB = bytes.length / (1024 * 1024);
-      print('✅ Image captured: ${sizeInMB.toStringAsFixed(2)} MB');
+      // print('✅ Image captured: ${sizeInMB.toStringAsFixed(2)} MB');
 
       if (sizeInMB > 2.0) {
         print(
@@ -690,7 +690,7 @@ class _SellScrapPageState extends State<SellScrapPage> {
         );
       }
     } catch (e) {
-      print('Failed to read image size: $e');
+      // print('Failed to read image size: $e');
     }
   }
 

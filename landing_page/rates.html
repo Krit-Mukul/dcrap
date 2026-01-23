@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Rates - DCrap</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    <span>dcrap</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="features.html">Features</a>
+                    <a href="rates.html" class="active">Rates</a>
+                    <a href="about.html">About</a>
+                    <a href="leaderboard.html">Leaderboard</a>
+                    <a href="contact.html">Contact</a>
+                    <button class="btn-primary" onclick="window.location.href='signup.html'">Get Started</button>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="features.html">Features</a>
+        <a href="rates.html">Rates</a>
+        <a href="about.html">About</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="contact.html">Contact</a>
+        <button class="btn-primary" onclick="window.location.href='signup.html'">Get Started</button>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Current Market Rates</h1>
+            <p>Updated daily • Last updated: <span id="lastUpdated"></span></p>
+            <div class="rate-calculator-btn">
+                <button class="btn-primary" onclick="showCalculator()">Calculate Your Earnings</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rates Section -->
+    <section class="rates-page">
+        <div class="container">
+            <div class="rates-grid-detailed">
+                <div class="rate-card-detailed">
+                    <div class="rate-icon">📰</div>
+                    <h3>Newspaper</h3>
+                    <div class="rate-price-large">₹12/kg</div>
+                    <div class="rate-trend up">↑ 5% this week</div>
+                    <div class="rate-details">
+                        <p><strong>Category:</strong> Paper</p>
+                        <p><strong>Min Quantity:</strong> 5 kg</p>
+                        <p><strong>Quality:</strong> Clean, dry</p>
+                    </div>
+                    <button class="btn-secondary" onclick="bookPickup('Newspaper')">Book Pickup</button>
+                </div>
+
+                <div class="rate-card-detailed">
+                    <div class="rate-icon">📦</div>
+                    <h3>Cardboard</h3>
+                    <div class="rate-price-large">₹10/kg</div>
+                    <div class="rate-trend stable">— Stable</div>
+                    <div class="rate-details">
+                        <p><strong>Category:</strong> Paper</p>
+                        <p><strong>Min Quantity:</strong> 10 kg</p>
+                        <p><strong>Quality:</strong> Flattened boxes</p>
+                    </div>
+                    <button class="btn-secondary" onclick="bookPickup('Cardboard')">Book Pickup</button>
+                </div>
+
+                <div class="rate-card-detailed">
+                    <div class="rate-icon">🥤</div>
+                    <h3>Plastic Bottles</h3>
+                    <div class="rate-price-large">₹8/kg</div>
+                    <div class="rate-trend up">↑ 3% this week</div>
+                    <div class="rate-details">
+                        <p><strong>Category:</strong> Plastic</p>
+                        <p><strong>Min Quantity:</strong> 3 kg</p>
+                        <p><strong>Quality:</strong> Clean, no labels</p>
+                    </div>
+                    <button class="btn-secondary" onclick="bookPickup('Plastic')">Book Pickup</button>
+                </div>
+
+                <div class="rate-card-detailed">
+                    <div class="rate-icon">🔧</div>
+                    <h3>Metal Scrap</h3>
+                    <div class="rate-price-large">₹25/kg</div>
+                    <div class="rate-trend down">↓ 2% this week</div>
+                    <div class="rate-details">
+                        <p><strong>Category:</strong> Metal</p>
+                        <p><strong>Min Quantity:</strong> 5 kg</p>
+                        <p><strong>Quality:</strong> Iron, steel, aluminum</p>
+                    </div>
+                    <button class="btn-secondary" onclick="bookPickup('Metal')">Book Pickup</button>
+                </div>
+
+                <div class="rate-card-detailed">
+                    <div class="rate-icon">📱</div>
+                    <h3>E-waste</h3>
+                    <div class="rate-price-large">₹30/kg</div>
+                    <div class="rate-trend up">↑ 8% this week</div>
+                    <div class="rate-details">
+                        <p><strong>Category:</strong> Electronics</p>
+                        <p><strong>Min Quantity:</strong> 2 kg</p>
+                        <p><strong>Quality:</strong> Working or non-working</p>
+                    </div>
+                    <button class="btn-secondary" onclick="bookPickup('E-waste')">Book Pickup</button>
+                </div>
+
+                <div class="rate-card-detailed">
+                    <div class="rate-icon">🍾</div>
+                    <h3>Glass Bottles</h3>
+                    <div class="rate-price-large">₹5/kg</div>
+                    <div class="rate-trend stable">— Stable</div>
+                    <div class="rate-details">
+                        <p><strong>Category:</strong> Glass</p>
+                        <p><strong>Min Quantity:</strong> 10 kg</p>
+                        <p><strong>Quality:</strong> Clean, no cracks</p>
+                    </div>
+                    <button class="btn-secondary" onclick="bookPickup('Glass')">Book Pickup</button>
+                </div>
+
+                <div class="rate-card-detailed">
+                    <div class="rate-icon">📚</div>
+                    <h3>Books & Magazines</h3>
+                    <div class="rate-price-large">₹14/kg</div>
+                    <div class="rate-trend up">↑ 4% this week</div>
+                    <div class="rate-details">
+                        <p><strong>Category:</strong> Paper</p>
+                        <p><strong>Min Quantity:</strong> 5 kg</p>
+                        <p><strong>Quality:</strong> Any condition</p>
+                    </div>
+                    <button class="btn-secondary" onclick="bookPickup('Books')">Book Pickup</button>
+                </div>
+
+                <div class="rate-card-detailed">
+                    <div class="rate-icon">🔋</div>
+                    <h3>Batteries</h3>
+                    <div class="rate-price-large">₹20/kg</div>
+                    <div class="rate-trend stable">— Stable</div>
+                    <div class="rate-details">
+                        <p><strong>Category:</strong> E-waste</p>
+                        <p><strong>Min Quantity:</strong> 1 kg</p>
+                        <p><strong>Quality:</strong> All types accepted</p>
+                    </div>
+                    <button class="btn-secondary" onclick="bookPickup('Batteries')">Book Pickup</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Modal -->
+    <div id="calculatorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCalculator()">&times;</span>
+            <h2>Earnings Calculator</h2>
+            <div class="calculator-form">
+                <div class="form-group">
+                    <label>Select Scrap Type:</label>
+                    <select id="scrapType" onchange="updateCalculation()">
+                        <option value="12">Newspaper - ₹12/kg</option>
+                        <option value="10">Cardboard - ₹10/kg</option>
+                        <option value="8">Plastic - ₹8/kg</option>
+                        <option value="25">Metal - ₹25/kg</option>
+                        <option value="30">E-waste - ₹30/kg</option>
+                        <option value="5">Glass - ₹5/kg</option>
+                        <option value="14">Books - ₹14/kg</option>
+                        <option value="20">Batteries - ₹20/kg</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Weight (kg):</label>
+                    <input type="number" id="weight" value="10" min="1" oninput="updateCalculation()">
+                </div>
+                <div class="calculation-result">
+                    <h3>Estimated Earnings:</h3>
+                    <div class="result-amount">₹<span id="totalAmount">120</span></div>
+                </div>
+                <button class="btn-primary" onclick="proceedToBooking()">Book This Pickup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Section -->
+    <section class="rate-info">
+        <div class="container">
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>🔄 Daily Updates</h3>
+                    <p>Our rates are updated daily based on market conditions to ensure you always get the best price.</p>
+                </div>
+                <div class="info-card">
+                    <h3>💯 Price Match</h3>
+                    <p>Found a better rate? We'll match it! We guarantee the best prices in the market.</p>
+                </div>
+                <div class="info-card">
+                    <h3>📈 Bulk Discounts</h3>
+                    <p>Selling in bulk? Get additional discounts on quantities above 100kg.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Sell Your Scrap?</h2>
+                <p>Get the best rates and instant payment</p>
+                <button class="btn-primary btn-large" onclick="window.location.href='signup.html'">Start Earning Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <span>DCrap</span>
+                    </div>
+                    <p>Making recycling rewarding and easy for everyone.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="features.html">Features</a>
+                    <a href="rates.html">Rates</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Refund Policy</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <a href="mailto:contact@dcrap.com">contact@dcrap.com</a>
+                    <a href="tel:+919876543210">+91 98765 43210</a>
+                    <p>Patiala, Punjab, India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DCrap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="rates.js"></script>
+</body>
+</html>

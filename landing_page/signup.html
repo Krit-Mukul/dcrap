@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started - DCrap</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    <span>dcrap</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="features.html">Features</a>
+                    <a href="rates.html">Rates</a>
+                    <a href="about.html">About</a>
+                    <a href="leaderboard.html">Leaderboard</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="features.html">Features</a>
+        <a href="rates.html">Rates</a>
+        <a href="about.html">About</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Signup Hero -->
+    <section class="signup-hero">
+        <div class="container">
+            <div class="signup-content">
+                <h1>Start Earning from Your Scrap Today!</h1>
+                <p class="lead">Join thousands of users who are making money while saving the planet</p>
+                <div class="signup-stats">
+                    <div class="stat-item">
+                        <div class="stat-num">10,000+</div>
+                        <div class="stat-label">Happy Users</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num">₹2Cr+</div>
+                        <div class="stat-label">Paid Out</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num">4.8★</div>
+                        <div class="stat-label">App Rating</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download-section">
+        <div class="container">
+            <div class="download-grid">
+                <div class="download-info">
+                    <h2>Download the DCrap App</h2>
+                    <p>Available on both iOS and Android. Get started in minutes!</p>
+                    
+                    <div class="download-buttons">
+                        <a href="#" class="store-badge google-play" onclick="alert('Redirecting to Play Store...'); return false;">
+                            <svg class="store-icon" viewBox="0 0 48 48" fill="none">
+                                <path d="M7.5 4.5L27 24L7.5 43.5C6.6 42.9 6 41.85 6 40.5V7.5C6 6.15 6.6 5.1 7.5 4.5Z" fill="#00D9FF"/>
+                                <path d="M27 24L7.5 4.5C8.1 4.2 8.7 4.05 9.45 4.05C10.35 4.05 11.25 4.35 12 4.95L34.5 18L27 24Z" fill="#FFDE00"/>
+                                <path d="M42 22.5C42.9 23.1 43.5 24.15 43.5 25.5C43.5 26.85 42.9 27.9 42 28.5L34.5 33L27 25.5L34.5 18L42 22.5Z" fill="#FF3E00"/>
+                                <path d="M27 24L34.5 30L12 43.05C11.25 43.65 10.35 43.95 9.45 43.95C8.7 43.95 8.1 43.8 7.5 43.5L27 24Z" fill="#00E070"/>
+                            </svg>
+                            <div class="store-text">
+                                <div class="store-subtitle">GET IT ON</div>
+                                <div class="store-title">Google Play</div>
+                            </div>
+                        </a>
+                        <a href="#" class="store-badge app-store" onclick="alert('Redirecting to App Store...'); return false;">
+                            <svg class="store-icon" viewBox="0 0 48 48" fill="currentColor">
+                                <path d="M37.5 40.5C36.15 42.3 34.65 44.1 32.55 44.1C30.45 44.1 29.7 42.9 27.15 42.9C24.6 42.9 23.7 44.1 21.75 44.25C19.8 44.4 18.15 42.45 16.8 40.65C13.95 36.9 11.85 29.7 14.85 24.75C16.35 22.35 19.05 20.85 21.9 20.7C23.85 20.55 25.65 21.9 27 21.9C28.35 21.9 30.75 20.4 33.15 20.55C34.2 20.55 37.5 21 39.45 23.7C39.3 23.85 35.85 26.1 35.85 30.6C35.85 35.85 40.05 37.5 40.2 37.5C40.05 37.65 39.3 40.05 37.5 40.5ZM30 15C31.35 13.35 32.25 11.1 32.25 9C32.25 8.7 32.25 8.4 32.1 8.1C30 8.25 27.6 9.75 26.1 11.55C24.9 12.9 23.85 15.15 23.85 17.4C23.85 17.7 23.85 18 24 18.15C24.15 18.15 24.45 18.15 24.6 18.15C26.55 18 28.8 16.5 30 15Z"/>
+                            </svg>
+                            <div class="store-text">
+                                <div class="store-subtitle">Download on the</div>
+                                <div class="store-title">App Store</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="qr-section">
+                        <div class="qr-placeholder">
+                            <img src="https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_300,h_300/https://prooftag.net/wp-content/uploads/2021/07/QR-Code.png" alt="QR Code" class="qr-code">
+                            <p>Scan QR Code</p>
+                        </div>
+                        <p class="qr-text">Scan with your phone camera to download</p>
+                    </div>
+                </div>
+
+                <div class="signup-form-container">
+                    <h2>Register Now</h2>
+                    <p>Fill in your details and we'll send you the download link</p>
+                    
+                    <form id="signupForm" class="signup-form">
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number *</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+91 98765 43210" pattern="[0-9]{10}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailAddress">Email Address *</label>
+                            <input type="email" id="emailAddress" name="emailAddress" placeholder="you@example.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <select id="city" name="city" required>
+                                <option value="">Select your city</option>
+                                <option value="patiala">Patiala</option>
+                                <option value="chandigarh">Chandigarh</option>
+                                <option value="ludhiana">Ludhiana</option>
+                                <option value="amritsar">Amritsar</option>
+                                <option value="jalandhar">Jalandhar</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="referral">Referral Code (Optional)</label>
+                            <input type="text" id="referral" name="referral" placeholder="Enter referral code">
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <span>I agree to the <a href="#" class="link">Terms & Conditions</a> and <a href="#" class="link">Privacy Policy</a></span>
+                            </label>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="updates" name="updates">
+                                <span>Send me updates about rates and special offers</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-large">Register & Get Download Link</button>
+                    </form>
+
+                    <div id="signupSuccess" class="form-message success" style="display: none;">
+                        ✓ Registration successful! Check your phone and email for the download link.
+                    </div>
+                    <div id="signupError" class="form-message error" style="display: none;">
+                        ✗ Something went wrong. Please try again.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <h2>Why Choose DCrap?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Best Prices Guaranteed</h3>
+                    <p>Get up to 30% more than traditional scrap dealers</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🚚</div>
+                    <h3>Doorstep Pickup</h3>
+                    <p>We come to you - no need to transport heavy materials</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Instant Payment</h3>
+                    <p>Money credited to your wallet immediately after pickup</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔒</div>
+                    <h3>Safe & Verified</h3>
+                    <p>All pickup partners are background-checked and verified</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2>What Our Users Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Best app for selling scrap! I've earned over ₹5000 in just 2 months. The pickup is always on time and payment is instant."</p>
+                    <div class="testimonial-author">
+                        <strong>Rajesh Kumar</strong>
+                        <span>Patiala</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Very convenient service! No more haggling with local dealers. Transparent pricing and professional service."</p>
+                    <div class="testimonial-author">
+                        <strong>Priya Sharma</strong>
+                        <span>Chandigarh</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Great initiative for the environment! Easy to use app and the customer support is excellent. Highly recommended!"</p>
+                    <div class="testimonial-author">
+                        <strong>Amit Singh</strong>
+                        <span>Ludhiana</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item-expanded">
+                    <h4>How do I get started?</h4>
+                    <p>Simply download the app, register with your phone number, and book your first pickup. It takes less than 3 minutes!</p>
+                </div>
+                <div class="faq-item-expanded">
+                    <h4>What types of scrap do you accept?</h4>
+                    <p>We accept newspapers, cardboard, plastic, metal, e-waste, glass, books, and batteries. Check our rates page for full details.</p>
+                </div>
+                <div class="faq-item-expanded">
+                    <h4>Is there a minimum quantity required?</h4>
+                    <p>Yes, minimum quantities vary by material type. Typically 5-10 kg for most items. Check individual item details in the app.</p>
+                </div>
+                <div class="faq-item-expanded">
+                    <h4>How do I receive payment?</h4>
+                    <p>Payment is credited instantly to your in-app wallet after pickup. You can withdraw to your bank account anytime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <span>DCrap</span>
+                    </div>
+                    <p>Making recycling rewarding and easy for everyone.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="features.html">Features</a>
+                    <a href="rates.html">Rates</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Refund Policy</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <a href="mailto:contact@dcrap.com">contact@dcrap.com</a>
+                    <a href="tel:+919876543210">+91 98765 43210</a>
+                    <p>Patiala, Punjab, India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DCrap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="signup.js"></script>
+</body>
+</html>
