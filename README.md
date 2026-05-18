@@ -1,70 +1,40 @@
-# 🌿 DCrap - Smart Scrap Selling Platform
+# ♻️ DCrap: Smart Scrap Selling Platform
 
-<div align="center>
+<div align="center">
 
-![Flutter Version](https://img.shields.io/badge/Flutter-3.35.3-02569B?style=for-the-badge&logo=flutter)
-![Dart Version](https://img.shields.io/badge/Dart-3.9.2-0175C2?style=for-the-badge&logo=dart)
-![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
-![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20Windows%20%7C%20Web-lightgrey?style=for-the-badge)
+![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
 
-**Transform your waste into wealth with DCrap - The modern way to sell scrap!**
+**Transforming waste into value with a tap.**
 
-[Features](#-features) • [Screenshots](#-screenshots) • [Installation](#-installation) • [Usage](#-usage) • [Contributing](#-contributing)
+[Features](#-key-features) • [Screenshots](#-screenshots) • [Architecture](#-project-architecture) • [Getting Started](#-getting-started) • [Contributing](#-contributing)
 
 </div>
 
 ---
 
-## 🎯 About
+## 📖 Overview
 
-DCrap is a revolutionary Flutter-based mobile and desktop application that makes selling scrap effortless. With an intuitive interface and smart features, users can schedule pickups, get instant price estimates, and contribute to a greener planet - all from the comfort of their homes.
+**DCrap** is a modern, eco-conscious platform designed to make selling recyclable scrap as easy as ordering food online. With a seamless cross-platform mobile application and a robust backend, DCrap empowers households to effortlessly schedule scrap pickups, get transparent pricing, and contribute to a sustainable future. 
 
-### 🌟 Why DCrap?
-
-- ♻️ **Eco-Friendly**: Promote recycling and reduce environmental impact
-- 💰 **Fair Pricing**: Transparent rates for all scrap types
-- 📱 **User-Friendly**: Beautiful, modern UI with smooth navigation
-- 🚚 **Convenient**: Schedule pickups at your preferred time
-- 🔄 **Auto Pickup**: Set recurring pickups for regular scrap collection
-- 📊 **Real-time Estimates**: Get instant price calculations
+Whether it's old newspapers, cardboard, plastics, or e-waste, DCrap provides a reliable and transparent way to recycle and earn.
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-### 📦 Multi-Item Support
-- Add multiple scrap items in one booking
-- Support for various categories: Newspaper, Cardboard, Plastic, Metal, E-waste
-- Custom weight and rate configuration
-- Visual categorization with icons and colors
-
-### 📸 Photo Verification
-- Optional photo upload for better estimates
-- Visual confirmation of scrap quality
-- Enhanced accuracy in pricing
-
-### 📅 Flexible Scheduling
-- **ASAP Pickup**: Get the earliest available slot
-- **Custom Schedule**: Choose specific date and time
-- **Auto Pickup**: Configure recurring pickups (daily, weekly, monthly)
-
-### 👤 Smart Contact Management
-- Auto-fill with Thapar University location
-- Phone number validation
-- PIN code verification
-- Address management
-
-### 💳 Transparent Pricing
-- Real-time price calculation
-- Item-wise breakup
-- Total weight summary
-- Estimated earnings display
-
-### 🎨 Modern UI/UX
-- Clean, minimalist design
-- Smooth animations
-- Dark mode support (coming soon)
-- Responsive across all devices
+*   **📱 Seamless Multi-Platform Experience:** Beautiful, responsive UI built with Flutter for Android, iOS, and Web.
+*   **⚖️ Transparent Pricing:** Real-time rate estimates for various scrap categories (Newspaper, Cardboard, Plastic, Metal, E-waste) based on weight.
+*   **🗓️ Smart Scheduling:** 
+    *   **ASAP:** Get the quickest available pickup slot.
+    *   **Custom:** Choose a specific date and time that suits you.
+    *   **Auto-Pickup:** Set up recurring collections (daily, weekly, monthly) for hassle-free recycling.
+*   **📸 Visual Verification:** Upload photos of your scrap for more accurate pricing and verification.
+*   **📍 Location Services:** Auto-fill capabilities, smart contact management, and robust address handling.
+*   **📊 Order Tracking:** Keep track of your scheduled pickups, completed orders, and overall environmental impact.
 
 ---
 
@@ -73,99 +43,97 @@ DCrap is a revolutionary Flutter-based mobile and desktop application that makes
 <div align="center">
 
 | Home Screen | Add Items | Schedule Pickup |
-|------------|-----------|----------------|
-| ![Home]() | ![Items]() | ![Schedule]() |
+| :---: | :---: | :---: |
+| ![Home](screenshots/home.jpg) | ![Items](screenshots/items.jpg) | ![Schedule](screenshots/schedule.jpg) |
 
-| Contact Details | Confirmation | Auto Pickup |
-|----------------|--------------|-------------|
-| ![Details]() | ![Success]() | ![Auto]() |
+| Contact Details | Confirmation | Market Rates |
+| :---: | :---: | :---: |
+| ![Details](screenshots/details.jpg) | ![Success](screenshots/success.jpg) | ![Rates](screenshots/rates.jpg) |
 
-</div>
+<!-- </div>
+
+> **Note for developers:** Place your screenshot images in the `screenshots/` directory matching the filenames above. -->
 
 ---
 
-## 🚀 Installation
+## 🏗 Project Architecture
+
+DCrap is structured as a monorepo containing three primary components:
+
+1.  **`/lib` (Frontend App):** The main Flutter application handling the user interface and interactions. Built with a feature-first architecture and Riverpod for state management.
+2.  **`/dcrap_backend` (API Server):** A Node.js & Express RESTful API powering the platform. It handles user data, order processing, dynamic rate management, and interfaces with MongoDB and Firebase Auth.
+3.  **`/landing_page`:** A static promotional website built with HTML, CSS, and Vanilla JS.
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to set up the DCrap project on your local machine.
 
 ### Prerequisites
+*   [Flutter SDK](https://flutter.dev/docs/get-started/install) (v3.35.3 or higher recommended)
+*   [Node.js](https://nodejs.org/) (v18+ recommended)
+*   [MongoDB](https://www.mongodb.com/) (Local or Atlas cluster)
+*   Firebase Project (for Authentication and Storage)
 
-- Flutter SDK (>=3.35.3)
-- Dart SDK (>=3.9.2)
-- Android Studio / Xcode / Visual Studio (for respective platforms)
-- Git
+### 1. Backend Setup (`/dcrap_backend`)
 
-### Quick Start
+```bash
+# Navigate to the backend directory
+cd dcrap_backend
 
-1. **Clone the repository**
-   ````bash
-   git clone https://github.com/yourusername/dcrap.git
-   cd dcrap
-   ````
-2. **Install dependencies**
-   ````bash
-   flutter pub get
-   ````
-3. **Run the app**
-   ````bash
-   flutter run
-   ````
+# Install dependencies
+npm install
 
----
+# Create a .env file based on .env.example
+# Add your MongoDB URI and Firebase Admin credentials
+cp .env.example .env
 
-## 📚 Usage
+# Start the development server
+npm run dev
+```
 
-1. **Register / Login**
-   - Create a new account or log in to an existing one
-   - Verify your phone number and set up a secure password
+### 2. Frontend Setup (Flutter)
 
-2. **Set Up Profile**
-   - Enter your address details for pickup
-   - Add payment information (if required)
+```bash
+# Return to the project root
+cd ..
 
-3. **Schedule a Pickup**
-   - Select the items you want to sell
-   - Choose a pickup date and time
-   - Confirm your booking
+# Install Flutter dependencies
+flutter pub get
 
-4. **Track Your Pickup**
-   - Receive real-time updates on your pickup status
-   - Contact the delivery person if needed
+# Ensure you have your Firebase configuration files ready:
+# - android/app/google-services.json
+# - ios/Runner/GoogleService-Info.plist
+# - .env file in the root for Flutter environment variables
 
-5. **Get Paid**
-   - Receive payment instantly after pickup completion
-   - View your earnings and transaction history
+# Run the app
+flutter run
+```
 
 ---
 
-## 🤝 Contributing
+## 🛠 Tech Stack
 
-We welcome contributions from everyone! To contribute to DCrap, please follow these steps:
+**Frontend:**
+*   **Framework:** Flutter & Dart
+*   **State Management:** Riverpod (`flutter_riverpod`)
+*   **Routing & UI:** Material 3, Lottie, FL Chart
+*   **Services:** Firebase Auth, Firebase Storage
 
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature/YourFeature`)
-3. Make your changes
-4. Commit your changes (`git commit -m 'Add some feature'`)
-5. Push to the branch (`git push origin feature/YourFeature`)
-6. Open a pull request
-
-Please make sure to update tests as appropriate and follow the coding standards used throughout the project.
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**Backend:**
+*   **Runtime:** Node.js
+*   **Framework:** Express.js
+*   **Database:** MongoDB (Mongoose)
+*   **Authentication:** Firebase Admin SDK
 
 ---
 
-## 📞 Contact
+## 📄 License
 
-For any inquiries or support, please contact:
-
-- **Email**: support@dcrap.com
-- **Phone**: +91 8968091609
-- **Twitter**: [@dcrap_app](https://twitter.com/dcrap_app)
-- **Facebook**: [DCrapApp](https://facebook.com/DCrapApp)
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
-
-Thank you for choosing DCrap - Let's make the world cleaner and greener, one scrap at a time!
+<div align="center">
+<i>Built to make recycling accessible for everyone.</i>
+</div>
